@@ -7,6 +7,9 @@ import {
 import { z } from "zod";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 
+const courseIdSchema = z.object({
+    id: z.string().uuid(),
+});
 const courseObjectSchema = z.object({
     name: z.string(),
     provedor: z.string(),
@@ -14,9 +17,8 @@ const courseObjectSchema = z.object({
     duration: z.number(),
     verifyUrl: z.string()
 });
-const courseObjectSchemaWithId = courseObjectSchema.extend({
-    id: z.string().uuid(),
-})
+
+const courseObjectSchemaWithId = courseIdSchema.merge(courseObjectSchema);
 const getCoursesResponseSchema = z.array(courseObjectSchemaWithId);
 const getCoursesSchema = {
     summary: "Get all courses",
