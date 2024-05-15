@@ -1,10 +1,10 @@
 import fastify from 'fastify';
 
+import { health } from "../routes/health";
+
 const app = fastify();
 
-app.get("/health", () => {
-    return { status: "ok" };
-});
+app.register(health);
 
 app.listen({ port: 3000 })
     .then( () => {
