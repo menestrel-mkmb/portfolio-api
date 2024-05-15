@@ -7,9 +7,27 @@ import {
 import { z } from "zod";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 
+const courseObjectSchema = z.object({
+    name: z.string(),
+    provedor: z.string(),
+    category: z.string(),
+    duration: z.number(),
+    verifyUrl: z.string()
+});
+const courseObjectSchemaWithId = courseObjectSchema.extend({
+    id: z.string().uuid(),
+})
+const getCoursesResponseSchema = z.array(courseObjectSchemaWithId);
+const getCoursesSchema = {
+    summary: "Get all courses",
+    tags: ["courses"],
+    response: {
+        200: getCoursesResponseSchema
+    }
+};
+
 const getCourses = async (request: FastifyRequest, reply: FastifyReply) => {
-    // const courses = getCoursesResponseSchema.parse([
-    const courses = ([
+    const courses = getCoursesResponseSchema.parse([
         {
             id: "123e4567-e89b-12d3-a456-426614174000",
             name: "Course 1",
@@ -27,6 +45,7 @@ const getCourses = async (request: FastifyRequest, reply: FastifyReply) => {
             verifyUrl: "https://example.com"
         }
     ]);
+
     return reply.send(courses);
 }
 
@@ -50,7 +69,7 @@ export async function course(app: FastifyInstance) {
     app
         .withTypeProvider<ZodTypeProvider>()
         .get("/courses",
-            // {schema: getCoursesSchema},
+            {schema: getCoursesSchema},
             getCourses)
         .post("/courses",
             // {schema: postCourseSchema},
