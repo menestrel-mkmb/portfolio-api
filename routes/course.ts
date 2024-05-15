@@ -49,16 +49,19 @@ const getCourses = async (request: FastifyRequest, reply: FastifyReply) => {
     return reply.send(courses);
 }
 
-const postCourses = async (request: FastifyRequest, reply: FastifyReply) => {
-    // const course = postCourseRequestSchema.parse(request.body);
-    const course = {
-        id: "123e4567-e89b-12d3-a456-426614174002",
-        name: "Course 3",
-        provedor: "Course 3",
-        category: "Course 3",
-        duration: 90,
-        verifyUrl: "https://example.com"
+const postCourseRequestSchema = courseObjectSchema;
+const postCourseResponseSchema = courseObjectSchemaWithId;
+const postCourseSchema = {
+    summary: "Create course",
+    tags: ["courses"],
+    body: postCourseRequestSchema,
+    response: {
+        201: postCourseResponseSchema
     }
+};
+
+const postCourses = async (request: FastifyRequest, reply: FastifyReply) => {
+    const course = postCourseRequestSchema.parse(request.body);
 
     console.log(course.name, course.provedor, course.category, course.duration, course.verifyUrl);
 
@@ -72,6 +75,6 @@ export async function course(app: FastifyInstance) {
             {schema: getCoursesSchema},
             getCourses)
         .post("/courses",
-            // {schema: postCourseSchema},
+            {schema: postCourseSchema},
             postCourses)
 }
