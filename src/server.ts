@@ -1,11 +1,12 @@
-interface Course {
-    id: number;
-    name: string;
-    provedor: string;
-    tags: string[];
-    category: string;
-    duration: number;
-    verify_url: string;
-}
+import fastify from 'fastify';
 
-console.log("init");
+const app = fastify();
+
+app.get("/health", () => {
+    return { status: "ok" };
+});
+
+app.listen({ port: 3000 })
+    .then( () => {
+        console.log("server listening on port 3000");
+    });
