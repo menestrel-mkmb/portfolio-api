@@ -9,3 +9,12 @@ datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
+
+model Course {
+  id        String @id @default(uuid())
+  name      String @unique
+  provedor  String
+  category  String
+  duration  Int
+  verifyUrl String @map("verify_url")
+}
