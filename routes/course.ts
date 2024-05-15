@@ -103,6 +103,25 @@ const postCourses = async (request: FastifyRequest, reply: FastifyReply) => {
     return reply.send(course);
 }
 
+const patchCourseRequestSchema = courseObjectSchema.partial();
+const patchCourseResponseSchema = {
+    200: courseObjectSchemaWithId
+}
+const patchCourseSchema = {
+    summary: "Update course",
+    tags: ["courses"],
+    params: courseIdSchema,
+    body: patchCourseRequestSchema,
+    response: patchCourseResponseSchema
+}
+
+const patchCourses = async (request: FastifyRequest, reply: FastifyReply) => {
+    const { id } = courseIdSchema.parse(request.params);
+    const course = patchCourseRequestSchema.parse(request.body);
+
+    return reply.send({ id, ...course });
+}
+
 export async function course(app: FastifyInstance) {
     app
         .withTypeProvider<ZodTypeProvider>()
@@ -115,4 +134,7 @@ export async function course(app: FastifyInstance) {
         .post("/courses",
             {schema: postCourseSchema},
             postCourses)
+        .patch("/courses/:id",
+            {schema: patchCourseSchema},
+            patchCourses)
 }
