@@ -57,7 +57,7 @@ const getCourses = async (request: FastifyRequest, reply: FastifyReply) => {
     ]);
 
     return reply.send(courses);
-}
+};
 
 const getCourseDetailsRequestSchema = courseIdSchema;
 const getCourseDetailsResponseSchema = {
@@ -68,7 +68,7 @@ const getCourseDetailsSchema = {
     tags: ["courses", "details"],
     params: getCourseDetailsRequestSchema,
     response: getCourseDetailsResponseSchema
-}
+};
 
 const getCourseDetails = async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = getCourseDetailsRequestSchema.parse(request.params);
@@ -81,8 +81,7 @@ const getCourseDetails = async (request: FastifyRequest, reply: FastifyReply) =>
         duration: 30,
         verifyUrl: "https://example.com"
     });
-}
-
+};
 
 const postCourseRequestSchema = courseObjectSchema;
 const postCourseResponseSchema = {
@@ -98,29 +97,44 @@ const postCourseSchema = {
 const postCourses = async (request: FastifyRequest, reply: FastifyReply) => {
     const course = postCourseRequestSchema.parse(request.body);
 
-    console.log(course.name, course.provedor, course.category, course.duration, course.verifyUrl);
-
     return reply.send(course);
-}
+};
 
 const patchCourseRequestSchema = courseObjectSchema.partial();
 const patchCourseResponseSchema = {
     200: courseObjectSchemaWithId
-}
+};
 const patchCourseSchema = {
     summary: "Update course",
     tags: ["courses"],
     params: courseIdSchema,
     body: patchCourseRequestSchema,
     response: patchCourseResponseSchema
-}
+};
 
 const patchCourses = async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = courseIdSchema.parse(request.params);
     const course = patchCourseRequestSchema.parse(request.body);
 
     return reply.send({ id, ...course });
-}
+};
+
+const deleteCourseRequestSchema = courseIdSchema;
+const deleteCourseResponseSchema = {
+    204: courseIdSchema
+};
+const deleteCourseSchema = {
+    summary: "Delete course",
+    tags: ["courses"],
+    params: deleteCourseRequestSchema,
+    response: deleteCourseResponseSchema
+};
+
+const deleteCourses = async (request: FastifyRequest, reply: FastifyReply) => {
+    const { id } = courseIdSchema.parse(request.params);
+
+    return reply.send({ id });
+};
 
 export async function course(app: FastifyInstance) {
     app
@@ -137,4 +151,7 @@ export async function course(app: FastifyInstance) {
         .patch("/courses/:id",
             {schema: patchCourseSchema},
             patchCourses)
-}
+        .delete("/courses/:id",
+            {schema: deleteCourseSchema},
+            deleteCourses);
+};
