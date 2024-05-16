@@ -61,7 +61,6 @@ const getCourseDetailsSchema = {
 
 const getCourseDetails = async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = getCourseDetailsRequestSchema.parse(request.params);
-
     const courseExists = await prisma.course.findUnique({
         where: {
             id
@@ -86,8 +85,19 @@ const postCourseSchema = {
 
 const postCourses = async (request: FastifyRequest, reply: FastifyReply) => {
     const course = postCourseRequestSchema.parse(request.body);
+    const nameExists = await prisma.course.findUnique({
+        where: {
+            name: course.name
+        }
+    });
 
-    return reply.send(course);
+    if(nameExists) throw new Error("Course name already exists");
+
+    const prismaCourse = await prisma.course.create({
+        data: course
+    });
+
+    return reply.send(prismaCourse);
 };
 
 const patchCourseRequestSchema = courseObjectSchema.partial();
