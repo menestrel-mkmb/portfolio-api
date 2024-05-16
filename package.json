@@ -12,7 +12,9 @@
   "description": "",
   "devDependencies": {
     "@types/node": "^20.12.12",
+    "pino-pretty": "^11.0.0",
     "prisma": "^5.14.0",
+    "tap": "^18.8.0",
     "tsx": "^4.10.2",
     "typescript": "^5.4.5"
   },
