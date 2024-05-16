@@ -150,7 +150,21 @@ const deleteCourseSchema = {
 const deleteCourses = async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = courseIdSchema.parse(request.params);
 
-    return reply.send({ id });
+    const courseExists = await prisma.course.findUnique({
+        where: {
+            id
+        }
+    });
+
+    if(!courseExists) throw new Error("Course not found, maybe already deleted?");
+
+    const deletedCourse = await prisma.course.delete({
+        where: {
+            id
+        }
+    });
+
+    return reply.send(deletedCourse);
 };
 
 export async function course(app: FastifyInstance) {
