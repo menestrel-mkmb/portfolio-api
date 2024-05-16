@@ -1,23 +1,18 @@
-import fastify from 'fastify';
+import { build } from "./app";
 
-import {
-    serializerCompiler,
-    validatorCompiler
-} from "fastify-type-provider-zod";
+export const server = build(
+    { logger: {
+        level: "debug",
+        transport: {
+            target: "pino-pretty"
+        },
+    }
+});
 
-import { health } from "./routes/health";
-import { course } from "./routes/course";
-
-const app = fastify();
-app.setSerializerCompiler(serializerCompiler);
-app.setValidatorCompiler(validatorCompiler);
-
-app.register(health);
-app.register(course);
-
-
-
-app.listen({ port: 3000 })
-    .then( () => {
-        console.log("server listening on port 3000");
-    });
+server.listen({ port: 3000, host: "0.0.0.0" }, (err, address) => {
+    if (err) {
+        server.log.error(err);
+        process.exit(1);
+    }
+    server.log.info(`server listening on ${address}`);
+})
