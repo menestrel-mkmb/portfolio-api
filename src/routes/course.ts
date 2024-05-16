@@ -62,14 +62,15 @@ const getCourseDetailsSchema = {
 const getCourseDetails = async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = getCourseDetailsRequestSchema.parse(request.params);
 
-    return reply.send({
-        id,
-        name: "Course 1",
-        provedor: "Course 1",
-        category: "Course 1",
-        duration: 30,
-        verifyUrl: "https://example.com"
+    const courseExists = await prisma.course.findUnique({
+        where: {
+            id
+        }
     });
+
+    if(!courseExists) throw new Error("Course not found");
+
+    return reply.send(courseExists);
 };
 
 const postCourseRequestSchema = courseObjectSchema;
