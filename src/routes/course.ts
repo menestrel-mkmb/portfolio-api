@@ -116,7 +116,24 @@ const patchCourses = async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = courseIdSchema.parse(request.params);
     const course = patchCourseRequestSchema.parse(request.body);
 
-    return reply.send({ id, ...course });
+    const courseExists = await prisma.course.findUnique({
+        where: {
+            id
+        }
+    });
+
+    if(!courseExists) throw new Error("Course not found");
+
+    const prismaCourse = await prisma.course.update({
+        where: {
+            id
+        },
+        data: {
+            ...course
+        }
+    });
+
+    return reply.send(prismaCourse);
 };
 
 const deleteCourseRequestSchema = courseIdSchema;
