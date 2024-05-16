@@ -7,6 +7,8 @@ import {
 import { z } from "zod";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 
+import { prisma } from "../lib/prisma";
+
 // ###
 // # RAW
 // ###
@@ -28,7 +30,8 @@ const courseObjectSchemaWithId = courseIdSchema.merge(courseObjectSchema);
 // ###
 
 const getCoursesResponseSchema = {
-    200: z.array(courseObjectSchemaWithId)
+    200: z.array(courseObjectSchemaWithId),
+    204: z.array(courseObjectSchemaWithId).optional()
 };
 const getCoursesSchema = {
     summary: "Get all courses",
@@ -37,24 +40,10 @@ const getCoursesSchema = {
 };
 
 const getCourses = async (request: FastifyRequest, reply: FastifyReply) => {
-    const courses = (getCoursesResponseSchema[200]).parse([
-        {
-            id: "123e4567-e89b-12d3-a456-426614174000",
-            name: "Course 1",
-            provedor: "Course 1",
-            category: "Course 1",
-            duration: 30,
-            verifyUrl: "https://example.com"
-        },
-        {
-            id: "123e4567-e89b-12d3-a456-426614174001",
-            name: "Course 2",
-            provedor: "Course 2",
-            category: "Course 2",
-            duration: 60,
-            verifyUrl: "https://example.com"
-        }
-    ]);
+    const prismaCourses = await prisma.course.findMany({});
+    const courses = (getCoursesResponseSchema[200]).parse(prismaCourses);
+
+    if(!courses) return reply.status(204).send(courses);
 
     return reply.send(courses);
 };
