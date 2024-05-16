@@ -7,6 +7,8 @@ import {
 import { z } from "zod";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 
+import { prisma } from "../lib/prisma";
+
 // ###
 // # RAW
 // ###
@@ -28,7 +30,8 @@ const courseObjectSchemaWithId = courseIdSchema.merge(courseObjectSchema);
 // ###
 
 const getCoursesResponseSchema = {
-    200: z.array(courseObjectSchemaWithId)
+    200: z.array(courseObjectSchemaWithId),
+    204: z.array(courseObjectSchemaWithId).optional()
 };
 const getCoursesSchema = {
     summary: "Get all courses",
@@ -37,24 +40,10 @@ const getCoursesSchema = {
 };
 
 const getCourses = async (request: FastifyRequest, reply: FastifyReply) => {
-    const courses = (getCoursesResponseSchema[200]).parse([
-        {
-            id: "123e4567-e89b-12d3-a456-426614174000",
-            name: "Course 1",
-            provedor: "Course 1",
-            category: "Course 1",
-            duration: 30,
-            verifyUrl: "https://example.com"
-        },
-        {
-            id: "123e4567-e89b-12d3-a456-426614174001",
-            name: "Course 2",
-            provedor: "Course 2",
-            category: "Course 2",
-            duration: 60,
-            verifyUrl: "https://example.com"
-        }
-    ]);
+    const prismaCourses = await prisma.course.findMany({});
+    const courses = (getCoursesResponseSchema[200]).parse(prismaCourses);
+
+    if(!courses) return reply.status(204).send(courses);
 
     return reply.send(courses);
 };
@@ -72,15 +61,15 @@ const getCourseDetailsSchema = {
 
 const getCourseDetails = async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = getCourseDetailsRequestSchema.parse(request.params);
-
-    return reply.send({
-        id,
-        name: "Course 1",
-        provedor: "Course 1",
-        category: "Course 1",
-        duration: 30,
-        verifyUrl: "https://example.com"
+    const courseExists = await prisma.course.findUnique({
+        where: {
+            id
+        }
     });
+
+    if(!courseExists) throw new Error("Course not found");
+
+    return reply.send(courseExists);
 };
 
 const postCourseRequestSchema = courseObjectSchema;
@@ -96,8 +85,19 @@ const postCourseSchema = {
 
 const postCourses = async (request: FastifyRequest, reply: FastifyReply) => {
     const course = postCourseRequestSchema.parse(request.body);
+    const nameExists = await prisma.course.findUnique({
+        where: {
+            name: course.name
+        }
+    });
 
-    return reply.send(course);
+    if(nameExists) throw new Error("Course name already exists");
+
+    const prismaCourse = await prisma.course.create({
+        data: course
+    });
+
+    return reply.send(prismaCourse);
 };
 
 const patchCourseRequestSchema = courseObjectSchema.partial();
@@ -116,7 +116,24 @@ const patchCourses = async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = courseIdSchema.parse(request.params);
     const course = patchCourseRequestSchema.parse(request.body);
 
-    return reply.send({ id, ...course });
+    const courseExists = await prisma.course.findUnique({
+        where: {
+            id
+        }
+    });
+
+    if(!courseExists) throw new Error("Course not found");
+
+    const prismaCourse = await prisma.course.update({
+        where: {
+            id
+        },
+        data: {
+            ...course
+        }
+    });
+
+    return reply.send(prismaCourse);
 };
 
 const deleteCourseRequestSchema = courseIdSchema;
@@ -133,7 +150,21 @@ const deleteCourseSchema = {
 const deleteCourses = async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = courseIdSchema.parse(request.params);
 
-    return reply.send({ id });
+    const courseExists = await prisma.course.findUnique({
+        where: {
+            id
+        }
+    });
+
+    if(!courseExists) throw new Error("Course not found, maybe already deleted?");
+
+    const deletedCourse = await prisma.course.delete({
+        where: {
+            id
+        }
+    });
+
+    return reply.send(deletedCourse);
 };
 
 export async function course(app: FastifyInstance) {
