@@ -7,7 +7,6 @@ import {
 import { health } from "./routes/health";
 import { course } from "./routes/course";
 
-
 export function build(opts={}) {
     const app = fastify(opts);
     app.setSerializerCompiler(serializerCompiler);
