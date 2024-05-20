@@ -1,1 +1,15 @@
 GET http://localhost:3000/works
+
+###
+
+POST http://localhost:3000/works
+Content-Type: application/json
+
+{
+    "name": "Instituto Federal de Educação, Ciência e Tecnologia do Tocantins",
+    "occupation": "Estagiário do laboratório de eletropneumática",
+    "startDate": "",
+    "endDate": "",
+    "description": "",
+    "category": "other"
+}
