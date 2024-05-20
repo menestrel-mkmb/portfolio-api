@@ -1,15 +1,51 @@
-GET http://localhost:3000/works
+@rootUrl=http://localhost:3000
 
 ###
 
-POST http://localhost:3000/works
+GET {{rootUrl}}/works
+
+###
+
+POST {{rootUrl}}/works
 Content-Type: application/json
 
 {
-    "name": "Instituto Federal de Educação, Ciência e Tecnologia do Tocantins",
-    "occupation": "Estagiário do laboratório de eletropneumática",
-    "startDate": "",
-    "endDate": "",
-    "description": "",
+    "name": "name",
+    "occupation": "occupation",
+    "startDate": "2020-06-01T00:00:00+00:00",
+    "endDate": "2021-12-01T00:00:00+00:00",
+    "description": "description",
     "category": "other"
 }
+
+###
+
+POST {{rootUrl}}/works
+Content-Type: application/json
+
+{
+    "name": "EndDate as optional",
+    "occupation": "EndDate",
+    "startDate": "2022-06-01T00:00:00+00:00",
+    "description": "EndDate",
+    "category": "other"
+}
+
+###
+
+POST {{rootUrl}}/works
+Content-Type: application/json
+
+{
+    "name": "Statement as optional",
+    "occupation": "Statement",
+    "startDate": "2022-06-01T00:00:00+00:00",
+    "endDate": "2024-01-01T00:00:00+00:00",
+    "description": "Statement",
+    "category": "other",
+    "statement": "Statement"
+}
+
+###
+
+GET {{rootUrl}}/works/60d8baa8-668d-4565-9f0b-06c36eb30f7a
