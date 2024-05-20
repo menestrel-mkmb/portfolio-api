@@ -24,7 +24,7 @@ model Work {
   name        String    @unique
   occupation  String
   startDate   DateTime  @map("start_date")
-  endData     DateTime? @map("end_date")
+  endDate     DateTime? @map("end_date")
   description String
   category    String
   statement   String?
