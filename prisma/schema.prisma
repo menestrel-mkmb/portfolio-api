@@ -26,4 +26,6 @@ model Work {
   startDate   DateTime  @map("start_date")
   endData     DateTime? @map("end_date")
   description String
+  category    String
+  statement   String?
 }
