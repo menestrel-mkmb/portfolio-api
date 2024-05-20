@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "tsx --env-file .env src/app.test.ts",
+    "test": "tsx --env-file .env src/**/*.test.ts",
     "dev": "tsx watch --env-file .env src/**/*.ts"
   },
   "keywords": [],
