@@ -16,23 +16,16 @@ import { prisma } from "../lib/prisma";
 const workIdSchema = z.object({
     id: z.string().uuid(),
 });
-const workStringDateSchema = z.object({
-    startDate: z.string(),
-    endDate: z.string().optional(),
-});
-const workDateSchema = z.object({
-    startDate: z.date(),
-    endDate: z.date().optional(),
-})
 const workObjectSchema = z.object({
     name: z.string(),
     occupation: z.string(),
     description: z.string(),
     category: z.string(),
     statement: z.string().optional(),
+    startDate: z.string(),
+    endDate: z.string().optional(),
 });
 const workObjectSchemaWithId = workIdSchema.merge(workObjectSchema);
-const workObjectSchemaWithIdWithDate = workObjectSchemaWithId.merge(workDateSchema);
 
 // ###
 // # METHODS
@@ -59,7 +52,7 @@ const getWorks = async (request: FastifyRequest, reply: FastifyReply) => {
 
 const getWorkDetailsRequestSchema = workIdSchema;
 const getWorkDetailsResponseSchema = {
-    200: workObjectSchemaWithIdWithDate
+    200: workObjectSchema
 };
 const getWorkDetailsSchema = {
     summary: "Get work details",
@@ -70,21 +63,36 @@ const getWorkDetailsSchema = {
 
 const getWorkDetails = async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = getWorkDetailsRequestSchema.parse(request.params);
-    const workExists = await prisma.work.findUnique({
+    let workExists = await prisma.work.findUnique({
         where: {
             id
+        },
+        select: {
+            name: true,
+            occupation: true,
+            description: true,
+            category: true,
+            statement: true,
+            startDate: true,
+            endDate: true
         }
     });
 
     if(!workExists) throw new Error("Work not found");
 
-    return reply.send(workExists);
+    let stringWork = {
+        ...workExists,
+        startDate: new Date(workExists.startDate).toISOString(),
+        endDate: workExists.endDate ? new Date(workExists.endDate).toISOString() : undefined
+    };
+
+    return reply.send(stringWork);
 }
 
-const postWorkRequestSchema = workObjectSchema.merge(workStringDateSchema);
+const postWorkRequestSchema = workObjectSchema;
 const postWorkResponseSchema = {
-    201: workObjectSchemaWithIdWithDate
-}
+    201: workObjectSchemaWithId
+};
 const postWorkSchema = {
     summary: "Create new work",
     tags: ["works"],
@@ -104,33 +112,39 @@ const postWork = async (request: FastifyRequest, reply: FastifyReply) => {
     if(workExists) throw new Error("Work name already exists");
 
     const startDate = new Date(work.startDate);
-    const endDate = work.endDate? new Date(work.endDate) : null;
 
     let datedWork = {
         ...work,
-        startDate,
-    }
+        startDate: startDate.toISOString()
+    };
 
-    if(endDate) {
+    if(work.endDate) {
+        const endDate = new Date(work.endDate);
         datedWork = {
             ...datedWork,
-            endDate
-        };
-    }
+            endDate: endDate.toISOString()
+        }
+    } //to maintain endDate as optional
 
-    console.log(datedWork);
-
-    const prismaWork = await prisma.work.create({
+    let prismaWork = await prisma.work.create({
         data: datedWork
     });
 
+    prismaWork = {
+        ...prismaWork,
+        startDate: (prismaWork.startDate).toISOString(),
+    }
+
+    if(prismaWork.endDate) {
+        prismaWork = {
+            ...prismaWork,
+            endDate: (prismaWork.endDate).toISOString(),
+        }
+    }
+
     return reply
             .status(201)
-            // .send({
-            //     "id": "00000000-0000-0000-0000-000000000000",
-            //     ...work
-            // });
-            .send(datedWork);
+            .send(prismaWork);
 }
 
 export async function work(app: FastifyInstance) {
