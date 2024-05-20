@@ -18,3 +18,12 @@ model Course {
   duration  Int
   verifyUrl String @map("verify_url")
 }
+
+model Work {
+  id          String    @id @default(uuid())
+  name        String    @unique
+  occupation  String
+  startDate   DateTime  @map("start_date")
+  endData     DateTime? @map("end_date")
+  description String
+}
