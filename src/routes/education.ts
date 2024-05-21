@@ -66,7 +66,11 @@ const getEducationDetails = async (request: FastifyRequest, reply: FastifyReply)
 
     if(!prismaEducation) throw new Error("Education not found");
 
-    const education = (getEducationDetailsResponseSchema[200]).parse(prismaEducation);
+    const education = (getEducationDetailsResponseSchema[200]).parse({
+        ...prismaEducation,
+        startDate: prismaEducation.startDate.toISOString(),
+        endDate: prismaEducation.endDate ? prismaEducation.endDate.toISOString() : null
+    });
 
     reply.send(education);
 };
