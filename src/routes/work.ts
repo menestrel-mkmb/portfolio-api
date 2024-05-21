@@ -186,6 +186,42 @@ const patchWork = async (request: FastifyRequest, reply: FastifyReply) => {
     });
 };
 
+const deleteWorkRequestSchema = workIdSchema;
+const deleteWorkResponseSchema = {
+    204: workObjectSchemaWithId
+};
+const deleteWorkSchema = {
+    summary: "Delete work",
+    tags: ["works"],
+    params: deleteWorkRequestSchema,
+    response: deleteWorkResponseSchema
+};
+
+const deleteWork = async (request: FastifyRequest, reply: FastifyReply) => {
+    const { id } = deleteWorkRequestSchema.parse(request.params);
+
+    let workExists = await prisma.work.findUnique({
+        where: {
+            id
+        }
+    });
+
+    if(!workExists) throw new Error("Work not found");
+
+    await prisma.work.delete({
+        where: {
+            id
+        }
+    });
+
+    return reply.status(204).send({
+        ...workExists,
+        statement: workExists.statement ? workExists.statement : null,
+        startDate: new Date(workExists.startDate).toISOString(),
+        endDate: workExists.endDate ? new Date(workExists.endDate).toISOString() : null
+    });
+};
+
 export async function work(app: FastifyInstance) {
     app
         .withTypeProvider<ZodTypeProvider>()
@@ -201,4 +237,7 @@ export async function work(app: FastifyInstance) {
         .patch("/works/:id",
             {schema: patchWorkSchema},
             patchWork)
+        .delete("/works/:id",
+            {schema: deleteWorkSchema},
+            deleteWork);
 }
