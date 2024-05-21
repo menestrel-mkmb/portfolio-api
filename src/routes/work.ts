@@ -21,9 +21,9 @@ const workObjectSchema = z.object({
     occupation: z.string(),
     description: z.string(),
     category: z.string(),
-    statement: z.string().optional(),
-    startDate: z.string(),
-    endDate: z.string().optional(),
+    statement: z.string().optional().nullable(),
+    startDate: z.string().datetime({offset: true}),
+    endDate: z.string().datetime({offset: true}).optional().nullable(),
 });
 const workObjectSchemaWithId = workIdSchema.merge(workObjectSchema);
 
@@ -52,7 +52,7 @@ const getWorks = async (request: FastifyRequest, reply: FastifyReply) => {
 
 const getWorkDetailsRequestSchema = workIdSchema;
 const getWorkDetailsResponseSchema = {
-    200: workObjectSchema
+    200: workObjectSchemaWithId
 };
 const getWorkDetailsSchema = {
     summary: "Get work details",
@@ -66,27 +66,16 @@ const getWorkDetails = async (request: FastifyRequest, reply: FastifyReply) => {
     let workExists = await prisma.work.findUnique({
         where: {
             id
-        },
-        select: {
-            name: true,
-            occupation: true,
-            description: true,
-            category: true,
-            statement: true,
-            startDate: true,
-            endDate: true
         }
     });
 
     if(!workExists) throw new Error("Work not found");
 
-    let stringWork = {
+    return reply.send({
         ...workExists,
         startDate: new Date(workExists.startDate).toISOString(),
-        endDate: workExists.endDate ? new Date(workExists.endDate).toISOString() : undefined
-    };
-
-    return reply.send(stringWork);
+        endDate: workExists.endDate ? new Date(workExists.endDate).toISOString() : null
+    });
 }
 
 const postWorkRequestSchema = workObjectSchema;
@@ -101,51 +90,45 @@ const postWorkSchema = {
 };
 
 const postWork = async (request: FastifyRequest, reply: FastifyReply) => {
-    const work = postWorkRequestSchema.parse(request.body);
+    const {
+        name,
+        occupation,
+        description,
+        category,
+        statement,
+        startDate,
+        endDate
+    } = postWorkRequestSchema.parse(request.body);
 
-    const workExists = await prisma.work.findUnique({
+    const workExists = await prisma.work.findFirst({
         where: {
-            name: work.name
+            name
         }
     });
 
-    if(workExists) throw new Error("Work name already exists");
+    if(workExists) throw new Error("Work already exists");
 
-    const startDate = new Date(work.startDate);
-
-    let datedWork = {
-        ...work,
-        startDate: startDate.toISOString()
-    };
-
-    if(work.endDate) {
-        const endDate = new Date(work.endDate);
-        datedWork = {
-            ...datedWork,
-            endDate: endDate.toISOString()
+    const newWork = await prisma.work.create({
+        data: {
+            name,
+            occupation,
+            description,
+            category,
+            statement: statement ? statement : null,
+            startDate: new Date(startDate).toISOString(),
+            endDate: endDate ? new Date(endDate).toISOString() : null
         }
-    } //to maintain endDate as optional
-
-    let prismaWork = await prisma.work.create({
-        data: datedWork
     });
 
-    prismaWork = {
-        ...prismaWork,
-        startDate: (prismaWork.startDate).toISOString(),
-    }
+    console.log(newWork);
 
-    if(prismaWork.endDate) {
-        prismaWork = {
-            ...prismaWork,
-            endDate: (prismaWork.endDate).toISOString(),
-        }
-    }
-
-    return reply
-            .status(201)
-            .send(prismaWork);
-}
+    return reply.status(201).send({
+        ...newWork,
+        statement: newWork.statement ? newWork.statement : null,
+        startDate: new Date(newWork.startDate).toISOString(),
+        endDate: newWork.endDate ? new Date(newWork.endDate).toISOString() : null
+    });
+};
 
 export async function work(app: FastifyInstance) {
     app
@@ -159,10 +142,4 @@ export async function work(app: FastifyInstance) {
         .post("/works",
             {schema: postWorkSchema},
             postWork)
-        // .patch("/works/:id",
-        //     {schema: patchWorkSchema},
-        //     patchWork)
-        // .delete("/works/:id",
-        //     {schema: deleteWorkSchema},
-        //     deleteWork);
 }
