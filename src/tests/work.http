@@ -60,3 +60,7 @@ Content-Type: application/json
     "category": "edited",
     "statement": "Patch"
 }
+
+###
+
+DELETE {{rootUrl}}/works/d4a3567d-e093-4c1f-8826-721cb2a219aa
