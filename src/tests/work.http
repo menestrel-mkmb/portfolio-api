@@ -48,3 +48,15 @@ Content-Type: application/json
 
 ###
 
+PATCH {{rootUrl}}/works/d4a3567d-e093-4c1f-8826-721cb2a219aa
+Content-Type: application/json
+
+{
+    "name": "PATCH updated",
+    "occupation": "Patch",
+    "startDate": "2016-06-01T00:00:00+00:00",
+    "endDate": "2016-01-01T00:00:00+00:00",
+    "description": "Patch",
+    "category": "edited",
+    "statement": "Patch"
+}
