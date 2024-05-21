@@ -31,10 +31,29 @@ export const educationObjectSchemaWithId = educationIdSchema.merge(educationObje
 // # METHODS
 // ###
 
+export const getAllEducationResponseSchema = {
+    200: z.array(educationObjectSchemaWithId),
+    204: z.array(educationObjectSchemaWithId).optional()
+};
+export const getAllEducationSchema = {
+    summary: "Get all education",
+    tags: ["education"],
+    response: getAllEducationResponseSchema
+};
 
+const getAllEducation = async (request: FastifyRequest, reply: FastifyReply) => {
+    const prismaEducations = await prisma.education.findMany({});
+    const education = (getAllEducationResponseSchema[200]).parse(prismaEducations);
+
+    if(education.length === 0) throw new Error("No education found");
+
+    reply.send(education);
+}
 
 export async function education(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
-    
+    .get("/education",
+        { schema: getAllEducationSchema },
+        getAllEducation);
 }
