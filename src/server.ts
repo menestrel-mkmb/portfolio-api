@@ -7,6 +7,7 @@ import {
 
 import { health } from "./routes/health";
 import { course } from "./routes/course";
+import { work } from "./routes/work";
 
 const app = fastify();
 app.setSerializerCompiler(serializerCompiler);
@@ -14,6 +15,7 @@ app.setValidatorCompiler(validatorCompiler);
 
 app.register(health);
 app.register(course);
+app.register(work);
 
 
 

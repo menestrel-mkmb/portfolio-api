@@ -1,0 +1,66 @@
+@rootUrl=http://localhost:3000
+
+###
+
+GET {{rootUrl}}/works
+
+###
+
+POST {{rootUrl}}/works
+Content-Type: application/json
+
+{
+    "name": "name",
+    "occupation": "occupation",
+    "startDate": "2020-06-01T00:00:00+00:00",
+    "endDate": "2021-12-01T00:00:00+00:00",
+    "description": "description",
+    "category": "other"
+}
+
+###
+
+POST {{rootUrl}}/works
+Content-Type: application/json
+
+{
+    "name": "EndDate as optional",
+    "occupation": "EndDate",
+    "startDate": "2022-06-01T00:00:00+00:00",
+    "description": "EndDate",
+    "category": "other"
+}
+
+###
+
+POST {{rootUrl}}/works
+Content-Type: application/json
+
+{
+    "name": "Statement as optional",
+    "occupation": "Statement",
+    "startDate": "2022-06-01T00:00:00+00:00",
+    "endDate": "2024-01-01T00:00:00+00:00",
+    "description": "Statement",
+    "category": "other",
+    "statement": "Statement"
+}
+
+###
+
+PATCH {{rootUrl}}/works/d4a3567d-e093-4c1f-8826-721cb2a219aa
+Content-Type: application/json
+
+{
+    "name": "PATCH updated",
+    "occupation": "Patch",
+    "startDate": "2016-06-01T00:00:00+00:00",
+    "endDate": "2016-01-01T00:00:00+00:00",
+    "description": "Patch",
+    "category": "edited",
+    "statement": "Patch"
+}
+
+###
+
+DELETE {{rootUrl}}/works/d4a3567d-e093-4c1f-8826-721cb2a219aa
