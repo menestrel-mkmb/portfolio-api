@@ -1,3 +1,18 @@
 @rootUrl=http://localhost:3000
 
 GET {{rootUrl}}/education
+
+###
+
+POST {{rootUrl}}/education
+Content-Type: application/json
+
+{
+    "title": "BSc Computer Science",
+    "institution": "University of Lagos",
+    "startDate": "2015-09-01T00:00:00+00:00",
+    "endDate": "2020-06-01T00:00:00+00:00",
+    "location": "Lagos, Nigeria",
+    "duration": 4600,
+    "verifyUrl": "http://verify.com/education/1"
+}
