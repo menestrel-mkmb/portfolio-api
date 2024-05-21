@@ -130,6 +130,62 @@ const postWork = async (request: FastifyRequest, reply: FastifyReply) => {
     });
 };
 
+const patchWorkRequestSchema = workObjectSchema.partial();
+const patchWorkResponseSchema = {
+    200: workObjectSchemaWithId
+};
+const patchWorkSchema = {
+    summary: "Update work",
+    tags: ["works"],
+    params: workIdSchema,
+    body: patchWorkRequestSchema,
+    response: patchWorkResponseSchema
+};
+
+const patchWork = async (request: FastifyRequest, reply: FastifyReply) => {
+    const { id } = workIdSchema.parse(request.params);
+
+    let workExists = await prisma.work.findUnique({
+        where: {
+            id
+        }
+    });
+
+    if(!workExists) throw new Error("Work not found");
+
+    const {
+        name,
+        occupation,
+        description,
+        category,
+        statement,
+        startDate,
+        endDate
+    } = patchWorkRequestSchema.parse(request.body);
+
+    const updatedWork = await prisma.work.update({
+        where: {
+            id
+        },
+        data: {
+            name,
+            occupation,
+            description,
+            category,
+            statement,
+            startDate,
+            endDate
+        }
+    });
+
+    return reply.send({
+        ...updatedWork,
+        statement: updatedWork.statement ? updatedWork.statement : null,
+        startDate: new Date(updatedWork.startDate).toISOString(),
+        endDate: updatedWork.endDate ? new Date(updatedWork.endDate).toISOString() : null
+    });
+};
+
 export async function work(app: FastifyInstance) {
     app
         .withTypeProvider<ZodTypeProvider>()
@@ -142,4 +198,7 @@ export async function work(app: FastifyInstance) {
         .post("/works",
             {schema: postWorkSchema},
             postWork)
+        .patch("/works/:id",
+            {schema: patchWorkSchema},
+            patchWork)
 }
