@@ -43,7 +43,15 @@ const getWorksSchema = {
 
 const getWorks = async (request: FastifyRequest, reply: FastifyReply) => {
     const prismaWorks = await prisma.work.findMany({});
-    const works = (getWorksResponseSchema[200]).parse(prismaWorks);
+
+    const works = (prismaWorks as any[]).map(work => {
+        return {
+            ...work,
+            statement: work.statement ? work.statement : null,
+            startDate: new Date(work.startDate).toISOString(),
+            endDate: work.endDate ? new Date(work.endDate).toISOString() : null
+        };
+    });
 
     if(!works) return reply.status(204).send(works);
 
@@ -214,12 +222,7 @@ const deleteWork = async (request: FastifyRequest, reply: FastifyReply) => {
         }
     });
 
-    return reply.status(204).send({
-        ...workExists,
-        statement: workExists.statement ? workExists.statement : null,
-        startDate: new Date(workExists.startDate).toISOString(),
-        endDate: workExists.endDate ? new Date(workExists.endDate).toISOString() : null
-    });
+    return reply.status(204).send({ id });
 };
 
 export async function work(app: FastifyInstance) {
