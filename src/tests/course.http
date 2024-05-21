@@ -1,16 +1,14 @@
-GET http://localhost:3000/health
+@rootUrl=http://localhost:3000
+
+GET {{rootUrl}}/courses
 
 ###
 
-GET http://localhost:3000/courses
+GET {{rootUrl}}/courses/53928666-fb3d-4826-bf74-7f5ff5785613
 
 ###
 
-GET http://localhost:3000/courses/53928666-fb3d-4826-bf74-7f5ff5785613
-
-###
-
-POST http://localhost:3000/courses
+POST {{rootUrl}}/courses
 Content-Type: application/json
 
 {
@@ -23,7 +21,7 @@ Content-Type: application/json
 
 ###
 
-PATCH http://localhost:3000/courses/53928666-fb3d-4826-bf74-7f5ff5785613
+PATCH {{rootUrl}}/courses/53928666-fb3d-4826-bf74-7f5ff5785613
 Content-Type: application/json
 
 {
@@ -34,4 +32,4 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:3000/courses/53928666-fb3d-4826-bf74-7f5ff5785613
+DELETE {{rootUrl}}/courses/53928666-fb3d-4826-bf74-7f5ff5785613
