@@ -1,10 +1,29 @@
 @rootUrl=http://localhost:3000
 
-GET {{rootUrl}}/education
+GET {{rootUrl}}/educations
 
 ###
 
-POST {{rootUrl}}/education
+GET {{rootUrl}}/educations/41d8181d-91c8-4dc9-954d-514891a24360
+
+###
+
+POST {{rootUrl}}/educations
+Content-Type: application/json
+
+{
+    "title": "Education 1",
+    "institution": "University 1",
+    "startDate": "2009-09-01T00:00:00+00:00",
+    "endDate": "2010-06-01T00:00:00+00:00",
+    "location": "Local",
+    "duration": 1000,
+    "verifyUrl": "http://verify.com/education/1"
+}
+
+###
+
+POST {{rootUrl}}/educations
 Content-Type: application/json
 
 {
@@ -19,11 +38,22 @@ Content-Type: application/json
 
 ###
 
-GET {{rootUrl}}/education/41d8181d-91c8-4dc9-954d-514891a24360
+POST {{rootUrl}}/educations
+Content-Type: application/json
+
+{
+    "title": "Date Error",
+    "institution": "University of Lagos",
+    "startDate": "2015-09-01T00:00:00+00:00",
+    "endDate": "2010-06-01T00:00:00+00:00",
+    "location": "Lagos, Nigeria",
+    "duration": 4600,
+    "verifyUrl": "http://verify.com/education/1"
+}
 
 ###
 
-PATCH {{rootUrl}}/education/41d8181d-91c8-4dc9-954d-514891a24360
+PATCH {{rootUrl}}/educations/41d8181d-91c8-4dc9-954d-514891a24360
 Content-Type: application/json
 
 {
@@ -36,7 +66,7 @@ Content-Type: application/json
 
 ###
 
-PATCH {{rootUrl}}/education/41d8181d-91c8-4dc9-954d-514891a24360
+PATCH {{rootUrl}}/educations/41d8181d-91c8-4dc9-954d-514891a24360
 Content-Type: application/json
 
 {
@@ -51,4 +81,4 @@ Content-Type: application/json
 
 ###
 
-DELETE {{rootUrl}}/education/41d8181d-91c8-4dc9-954d-514891a24360
+DELETE {{rootUrl}}/educations/41d8181d-91c8-4dc9-954d-514891a24360
