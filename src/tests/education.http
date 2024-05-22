@@ -35,6 +35,7 @@ Content-Type: application/json
 }
 
 ###
+
 PATCH {{rootUrl}}/education/41d8181d-91c8-4dc9-954d-514891a24360
 Content-Type: application/json
 
@@ -47,3 +48,7 @@ Content-Type: application/json
     "duration": 4600,
     "verifyUrl": "http://verify.com/education/1"
 }
+
+###
+
+DELETE {{rootUrl}}/education/41d8181d-91c8-4dc9-954d-514891a24360
