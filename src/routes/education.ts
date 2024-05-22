@@ -135,14 +135,9 @@ export const patchEducationSchema = {
 };
 
 const patchEducation = async (request: FastifyRequest, reply: FastifyReply) => {
-    console.log("patchEducation");
     const { id } = educationIdSchema.parse(request.params);
 
-    const educationExists = await prisma.education.findUnique({
-        where: {
-            id
-        }
-    });
+    const educationExists = await prisma.education.findUnique({ where: { id } });
 
     if(!educationExists) throw new Error("Education not found");
 
@@ -160,11 +155,8 @@ const patchEducation = async (request: FastifyRequest, reply: FastifyReply) => {
         ) throw new Error("Start date is after end date");
 
     const prismaEducation = await prisma.education.update({
-        where: {
-            id: educationExists.id
-        },
-        data: 
-            education
+        where: { id },
+        data: education
     });
 
     const response = (patchEducationResponseSchema[200]).parse({
@@ -174,6 +166,27 @@ const patchEducation = async (request: FastifyRequest, reply: FastifyReply) => {
     });
 
     reply.send(response);
+};
+
+export const deleteEducationResponseSchema = {
+    204: educationIdSchema
+};
+export const deleteEducationSchema = {
+    summary: "Delete education",
+    tags: ["education"],
+    params: educationIdSchema,
+    response: deleteEducationResponseSchema
+};
+
+const deleteEducation = async (request: FastifyRequest, reply: FastifyReply) => {
+    const { id } = educationIdSchema.parse(request.params);
+
+    const educationExists = await prisma.education.findUnique({ where: { id } });
+    if(!educationExists) throw new Error("Education not found. Maybe already deleted?");
+
+    await prisma.education.delete({ where: { id } });
+
+    reply.code(204).send({ id });
 };
 
 export async function education(app: FastifyInstance) {
@@ -190,5 +203,8 @@ export async function education(app: FastifyInstance) {
         postEducation)
     .patch("/education/:id",
         { schema: patchEducationSchema },
-        patchEducation);
+        patchEducation)
+    .delete("/education/:id",
+        { schema: deleteEducationSchema },
+        deleteEducation);
 }
