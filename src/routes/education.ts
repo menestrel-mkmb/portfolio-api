@@ -101,7 +101,7 @@ const postEducation = async (request: FastifyRequest, reply: FastifyReply) => {
         ...education,
         startDate: new Date(education.startDate),
         endDate: education.endDate ? new Date(education.endDate) : null
-    }
+    };
 
     if(!datedEducation) throw new Error("Invalid education data");
     if( datedEducation.endDate &&
@@ -122,6 +122,60 @@ const postEducation = async (request: FastifyRequest, reply: FastifyReply) => {
     reply.code(201).send(response);
 };
 
+export const patchEducationRequestSchema = educationObjectSchema.partial();
+export const patchEducationResponseSchema = {
+    200: educationObjectSchemaWithId
+};
+export const patchEducationSchema = {
+    summary: "Update education",
+    tags: ["education"],
+    body: patchEducationRequestSchema,
+    params: educationIdSchema,
+    response: patchEducationResponseSchema
+};
+
+const patchEducation = async (request: FastifyRequest, reply: FastifyReply) => {
+    console.log("patchEducation");
+    const { id } = educationIdSchema.parse(request.params);
+
+    const educationExists = await prisma.education.findUnique({
+        where: {
+            id
+        }
+    });
+
+    if(!educationExists) throw new Error("Education not found");
+
+    const education = patchEducationRequestSchema.parse(request.body);
+
+    const datedEducation = {
+        ...education,
+        startDate: education.startDate ? new Date(education.startDate) : null,
+        endDate: education.endDate ? new Date(education.endDate) : null
+    };
+
+    if(!datedEducation) throw new Error("Invalid education data");
+    if( datedEducation.endDate && datedEducation.startDate &&
+        datedEducation.startDate > datedEducation.endDate
+        ) throw new Error("Start date is after end date");
+
+    const prismaEducation = await prisma.education.update({
+        where: {
+            id: educationExists.id
+        },
+        data: 
+            education
+    });
+
+    const response = (patchEducationResponseSchema[200]).parse({
+        ...prismaEducation,
+        startDate: prismaEducation.startDate.toISOString(),
+        endDate: prismaEducation.endDate ? prismaEducation.endDate.toISOString() : null
+    });
+
+    reply.send(response);
+};
+
 export async function education(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
@@ -133,5 +187,8 @@ export async function education(app: FastifyInstance) {
         getEducationDetails)
     .post("/education",
         { schema: postEducationSchema },
-        postEducation);
+        postEducation)
+    .patch("/education/:id",
+        { schema: patchEducationSchema },
+        patchEducation);
 }
