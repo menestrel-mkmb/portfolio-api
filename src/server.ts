@@ -8,6 +8,7 @@ import {
 import { health } from "./routes/health";
 import { course } from "./routes/course";
 import { work } from "./routes/work";
+import { education } from './routes/education';
 
 const app = fastify();
 app.setSerializerCompiler(serializerCompiler);
@@ -16,8 +17,7 @@ app.setValidatorCompiler(validatorCompiler);
 app.register(health);
 app.register(course);
 app.register(work);
-
-
+app.register(education);
 
 app.listen({ port: 3000 })
     .then( () => {

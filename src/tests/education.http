@@ -1,0 +1,54 @@
+@rootUrl=http://localhost:3000
+
+GET {{rootUrl}}/education
+
+###
+
+POST {{rootUrl}}/education
+Content-Type: application/json
+
+{
+    "title": "BSc Computer Science",
+    "institution": "University of Lagos",
+    "startDate": "2015-09-01T00:00:00+00:00",
+    "endDate": "2020-06-01T00:00:00+00:00",
+    "location": "Lagos, Nigeria",
+    "duration": 4600,
+    "verifyUrl": "http://verify.com/education/1"
+}
+
+###
+
+GET {{rootUrl}}/education/41d8181d-91c8-4dc9-954d-514891a24360
+
+###
+
+PATCH {{rootUrl}}/education/41d8181d-91c8-4dc9-954d-514891a24360
+Content-Type: application/json
+
+{
+    "title": "PATCH Computer Science",
+    "startDate": "2008-09-01T00:00:00+00:00",
+    "endDate": "2009-06-01T00:00:00+00:00",
+    "duration": 2300,
+    "verifyUrl": "http://verify.com/patch"
+}
+
+###
+
+PATCH {{rootUrl}}/education/41d8181d-91c8-4dc9-954d-514891a24360
+Content-Type: application/json
+
+{
+    "title": "BSc Computer Science",
+    "institution": "University of Lagos",
+    "startDate": "2015-09-01T00:00:00+00:00",
+    "endDate": "2020-06-01T00:00:00+00:00",
+    "location": "Lagos, Nigeria",
+    "duration": 4600,
+    "verifyUrl": "http://verify.com/education/1"
+}
+
+###
+
+DELETE {{rootUrl}}/education/41d8181d-91c8-4dc9-954d-514891a24360

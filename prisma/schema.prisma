@@ -29,3 +29,14 @@ model Work {
   category    String
   statement   String?
 }
+
+model Education {
+  id          String    @id @default(uuid())
+  title       String    @unique
+  institution String
+  startDate   DateTime  @map("start_date")
+  endDate     DateTime? @map("end_date")
+  location    String
+  duration    Int
+  verifyUrl   String    @map("verify_url")
+}
