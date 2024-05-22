@@ -31,9 +31,10 @@ const workObjectSchemaWithId = workIdSchema.merge(workObjectSchema);
 // # METHODS
 // ###
 
+const getWorksArraySchema = z.array(workObjectSchemaWithId);
 const getWorksResponseSchema = {
-    200: z.array(workObjectSchemaWithId),
-    204: z.array(workObjectSchemaWithId).optional()
+    200: getWorksArraySchema,
+    204: getWorksArraySchema.optional()
 };
 const getWorksSchema = {
     summary: "Get all works",
@@ -43,8 +44,7 @@ const getWorksSchema = {
 
 const getWorks = async (request: FastifyRequest, reply: FastifyReply) => {
     const prismaWorks = await prisma.work.findMany({});
-
-    const works = (prismaWorks as any[]).map(work => {
+    const works = (prismaWorks).map(work  => {
         return {
             ...work,
             statement: work.statement ? work.statement : null,
@@ -52,8 +52,7 @@ const getWorks = async (request: FastifyRequest, reply: FastifyReply) => {
             endDate: work.endDate ? new Date(work.endDate).toISOString() : null
         };
     });
-
-    if(!works) return reply.status(204).send(works);
+    if(!works) return reply.code(204).send(works);
 
     return reply.send(works);
 };
@@ -71,12 +70,8 @@ const getWorkDetailsSchema = {
 
 const getWorkDetails = async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = getWorkDetailsRequestSchema.parse(request.params);
-    let workExists = await prisma.work.findUnique({
-        where: {
-            id
-        }
-    });
-
+    
+    let workExists = await prisma.work.findUnique({ where: { id } });
     if(!workExists) throw new Error("Work not found");
 
     return reply.send({
@@ -98,39 +93,21 @@ const postWorkSchema = {
 };
 
 const postWork = async (request: FastifyRequest, reply: FastifyReply) => {
-    const {
-        name,
-        occupation,
-        description,
-        category,
-        statement,
-        startDate,
-        endDate
-    } = postWorkRequestSchema.parse(request.body);
+    const work = postWorkRequestSchema.parse(request.body);
 
-    const workExists = await prisma.work.findFirst({
-        where: {
-            name
-        }
-    });
-
+    const workExists = await prisma.work.findFirst({ where: { name: work.name } });
     if(workExists) throw new Error("Work already exists");
 
     const newWork = await prisma.work.create({
         data: {
-            name,
-            occupation,
-            description,
-            category,
-            statement: statement ? statement : null,
-            startDate: new Date(startDate).toISOString(),
-            endDate: endDate ? new Date(endDate).toISOString() : null
+            ...work,
+            statement: work.statement ? work.statement : null,
+            startDate: new Date(work.startDate).toISOString(),
+            endDate: work.endDate ? new Date(work.endDate).toISOString() : null
         }
     });
 
-    console.log(newWork);
-
-    return reply.status(201).send({
+    return reply.code(201).send({
         ...newWork,
         statement: newWork.statement ? newWork.statement : null,
         startDate: new Date(newWork.startDate).toISOString(),
@@ -153,38 +130,17 @@ const patchWorkSchema = {
 const patchWork = async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = workIdSchema.parse(request.params);
 
-    let workExists = await prisma.work.findUnique({
-        where: {
-            id
-        }
-    });
-
+    const workExists = await prisma.work.findUnique({ where: { id } });
     if(!workExists) throw new Error("Work not found");
 
-    const {
-        name,
-        occupation,
-        description,
-        category,
-        statement,
-        startDate,
-        endDate
-    } = patchWorkRequestSchema.parse(request.body);
+    const work = patchWorkRequestSchema.parse(request.body);
 
-    const updatedWork = await prisma.work.update({
-        where: {
-            id
-        },
-        data: {
-            name,
-            occupation,
-            description,
-            category,
-            statement,
-            startDate,
-            endDate
-        }
-    });
+    const workNameExists = await prisma.work.findFirst({ where: { name: work.name } });
+    if(workNameExists) throw new Error("Work name already exists");
+
+    if(work.startDate && work.endDate && work.startDate > work.endDate) throw new Error("Start date is after end date");
+
+    const updatedWork = await prisma.work.update({ where: { id }, data: work });
 
     return reply.send({
         ...updatedWork,
@@ -196,7 +152,7 @@ const patchWork = async (request: FastifyRequest, reply: FastifyReply) => {
 
 const deleteWorkRequestSchema = workIdSchema;
 const deleteWorkResponseSchema = {
-    204: workObjectSchemaWithId
+    204: workObjectSchemaWithId.optional()
 };
 const deleteWorkSchema = {
     summary: "Delete work",
@@ -208,21 +164,12 @@ const deleteWorkSchema = {
 const deleteWork = async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = deleteWorkRequestSchema.parse(request.params);
 
-    let workExists = await prisma.work.findUnique({
-        where: {
-            id
-        }
-    });
-
+    let workExists = await prisma.work.findUnique({ where: { id } });
     if(!workExists) throw new Error("Work not found");
 
-    await prisma.work.delete({
-        where: {
-            id
-        }
-    });
+    await prisma.work.delete({ where: { id } });
 
-    return reply.status(204).send({ id });
+    return reply.code(204).send();
 };
 
 export async function work(app: FastifyInstance) {

@@ -42,8 +42,7 @@ const getCoursesSchema = {
 const getCourses = async (request: FastifyRequest, reply: FastifyReply) => {
     const prismaCourses = await prisma.course.findMany({});
     const courses = (getCoursesResponseSchema[200]).parse(prismaCourses);
-
-    if(!courses) return reply.status(204).send(courses);
+    if(!courses) return reply.code(204).send(courses);
 
     return reply.send(courses);
 };
@@ -61,12 +60,8 @@ const getCourseDetailsSchema = {
 
 const getCourseDetails = async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = getCourseDetailsRequestSchema.parse(request.params);
-    const courseExists = await prisma.course.findUnique({
-        where: {
-            id
-        }
-    });
 
+    const courseExists = await prisma.course.findUnique({ where: { id } });
     if(!courseExists) throw new Error("Course not found");
 
     return reply.send(courseExists);
@@ -85,19 +80,13 @@ const postCourseSchema = {
 
 const postCourses = async (request: FastifyRequest, reply: FastifyReply) => {
     const course = postCourseRequestSchema.parse(request.body);
-    const nameExists = await prisma.course.findUnique({
-        where: {
-            name: course.name
-        }
-    });
-
+    
+    const nameExists = await prisma.course.findUnique({ where: { name: course.name } });
     if(nameExists) throw new Error("Course name already exists");
 
-    const prismaCourse = await prisma.course.create({
-        data: course
-    });
+    const prismaCourse = await prisma.course.create({ data: course });
 
-    return reply.send(prismaCourse);
+    return reply.code(201).send(prismaCourse);
 };
 
 const patchCourseRequestSchema = courseObjectSchema.partial();
@@ -116,21 +105,15 @@ const patchCourses = async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = courseIdSchema.parse(request.params);
     const course = patchCourseRequestSchema.parse(request.body);
 
-    const courseExists = await prisma.course.findUnique({
-        where: {
-            id
-        }
-    });
-
+    const courseExists = await prisma.course.findUnique({ where: { id } });
     if(!courseExists) throw new Error("Course not found");
 
+    const nameExists = await prisma.course.findUnique({ where: { name: course.name } });
+    if(nameExists) throw new Error("Course name already exists");
+
     const prismaCourse = await prisma.course.update({
-        where: {
-            id
-        },
-        data: {
-            ...course
-        }
+        where: { id },
+        data: { ...course }
     });
 
     return reply.send(prismaCourse);
@@ -138,7 +121,7 @@ const patchCourses = async (request: FastifyRequest, reply: FastifyReply) => {
 
 const deleteCourseRequestSchema = courseIdSchema;
 const deleteCourseResponseSchema = {
-    204: courseIdSchema
+    204: courseIdSchema.optional()
 };
 const deleteCourseSchema = {
     summary: "Delete course",
@@ -150,21 +133,12 @@ const deleteCourseSchema = {
 const deleteCourses = async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = courseIdSchema.parse(request.params);
 
-    const courseExists = await prisma.course.findUnique({
-        where: {
-            id
-        }
-    });
-
+    const courseExists = await prisma.course.findUnique({ where: { id } });
     if(!courseExists) throw new Error("Course not found, maybe already deleted?");
 
-    const deletedCourse = await prisma.course.delete({
-        where: {
-            id
-        }
-    });
+    const deletedCourse = await prisma.course.delete({ where: { id } });
 
-    return reply.send(deletedCourse);
+    return reply.code(204).send(deletedCourse);
 };
 
 export async function course(app: FastifyInstance) {
