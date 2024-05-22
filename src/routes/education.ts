@@ -43,11 +43,17 @@ export const getAllEducationSchema = {
 
 const getAllEducation = async (request: FastifyRequest, reply: FastifyReply) => {
     const prismaEducations = await prisma.education.findMany({});
-    const education = (getAllEducationResponseSchema[200]).parse(prismaEducations);
 
-    if(education.length === 0) throw new Error("No education found");
+    const datedEducations = prismaEducations.map(education => ({
+        ...education,
+        startDate: education.startDate.toISOString(),
+        endDate: education.endDate ? education.endDate.toISOString() : null
+    }));
+    const educations = (getAllEducationResponseSchema[200]).parse(datedEducations);
 
-    reply.send(education);
+    if(educations.length === 0) throw new Error("No education found");
+
+    reply.send(educations);
 }
 
 export const getEducationDetailsResponseSchema = {
@@ -138,10 +144,12 @@ const patchEducation = async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = educationIdSchema.parse(request.params);
 
     const educationExists = await prisma.education.findUnique({ where: { id } });
-
     if(!educationExists) throw new Error("Education not found");
 
     const education = patchEducationRequestSchema.parse(request.body);
+
+    const nameExists = await prisma.education.findUnique({ where: { title: education.title } });
+    if(nameExists) throw new Error("Unique title already exists");
 
     const datedEducation = {
         ...education,
@@ -186,7 +194,7 @@ const deleteEducation = async (request: FastifyRequest, reply: FastifyReply) => 
 
     await prisma.education.delete({ where: { id } });
 
-    reply.code(204).send({ id });
+    reply.code(204).send();
 };
 
 export async function education(app: FastifyInstance) {
