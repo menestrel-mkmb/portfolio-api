@@ -31,26 +31,25 @@ export const educationObjectSchemaWithId = educationIdSchema.merge(educationObje
 // # METHODS
 // ###
 
-export const getAllEducationResponseSchema = {
+export const getEducationsResponseSchema = {
     200: z.array(educationObjectSchemaWithId),
     204: z.array(educationObjectSchemaWithId).optional()
 };
-export const getAllEducationSchema = {
+export const getEducationsSchema = {
     summary: "Get all education",
     tags: ["education"],
-    response: getAllEducationResponseSchema
+    response: getEducationsResponseSchema
 };
 
-const getAllEducation = async (request: FastifyRequest, reply: FastifyReply) => {
+const getEducations = async (request: FastifyRequest, reply: FastifyReply) => {
     const prismaEducations = await prisma.education.findMany({});
-
     const datedEducations = prismaEducations.map(education => ({
         ...education,
         startDate: education.startDate.toISOString(),
         endDate: education.endDate ? education.endDate.toISOString() : null
     }));
-    const educations = (getAllEducationResponseSchema[200]).parse(datedEducations);
 
+    const educations = (getEducationsResponseSchema[200]).parse(datedEducations);
     if(educations.length === 0) throw new Error("No education found");
 
     reply.send(educations);
@@ -68,8 +67,8 @@ export const getEducationDetailsSchema = {
 
 const getEducationDetails = async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = educationIdSchema.parse(request.params);
-    const prismaEducation = await prisma.education.findUnique({ where: { id } });
 
+    const prismaEducation = await prisma.education.findUnique({ where: { id } });
     if(!prismaEducation) throw new Error("Education not found");
 
     const education = (getEducationDetailsResponseSchema[200]).parse({
@@ -96,11 +95,8 @@ const postEducation = async (request: FastifyRequest, reply: FastifyReply) => {
     const education = postEducationRequestSchema.parse(request.body);
 
     const educationExists = await prisma.education.findUnique({
-        where: {
-            title: education.title
-        }
+        where: { title: education.title }
     });
-
     if(educationExists) throw new Error("Education already exists");
 
     const datedEducation = {
@@ -114,10 +110,7 @@ const postEducation = async (request: FastifyRequest, reply: FastifyReply) => {
         datedEducation.startDate > datedEducation.endDate
         ) throw new Error("Start date is after end date");
 
-    const prismaEducation = await prisma.education.create({
-        data: 
-            education
-    });
+    const prismaEducation = await prisma.education.create({ data: education });
 
     const response = (postEducationResponseSchema[201]).parse({
         ...prismaEducation,
@@ -167,13 +160,11 @@ const patchEducation = async (request: FastifyRequest, reply: FastifyReply) => {
         data: education
     });
 
-    const response = (patchEducationResponseSchema[200]).parse({
+    reply.send({
         ...prismaEducation,
-        startDate: prismaEducation.startDate.toISOString(),
+        startDate: prismaEducation.startDate ? prismaEducation.startDate.toISOString() : null,
         endDate: prismaEducation.endDate ? prismaEducation.endDate.toISOString() : null
     });
-
-    reply.send(response);
 };
 
 export const deleteEducationResponseSchema = {
@@ -200,19 +191,19 @@ const deleteEducation = async (request: FastifyRequest, reply: FastifyReply) => 
 export async function education(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
-    .get("/education",
-        { schema: getAllEducationSchema },
-        getAllEducation)
-    .get("/education/:id",
+    .get("/educations",
+        { schema: getEducationsSchema },
+        getEducations)
+    .get("/educations/:id",
         { schema: getEducationDetailsSchema },
         getEducationDetails)
-    .post("/education",
+    .post("/educations",
         { schema: postEducationSchema },
         postEducation)
-    .patch("/education/:id",
+    .patch("/educations/:id",
         { schema: patchEducationSchema },
         patchEducation)
-    .delete("/education/:id",
+    .delete("/educations/:id",
         { schema: deleteEducationSchema },
         deleteEducation);
 }
