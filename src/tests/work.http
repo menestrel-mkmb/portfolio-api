@@ -1,4 +1,5 @@
 @rootUrl=http://localhost:3000
+@uuid=8d7c4b3e-8060-471e-a1c9-2974fd9e61d3
 
 ###
 
@@ -6,7 +7,7 @@ GET {{rootUrl}}/works
 
 ###
 
-GET {{rootUrl}}/works/909704e5-4003-40bd-87e3-ce23180877eb
+GET {{rootUrl}}/works/{{uuid}}
 
 ###
 
@@ -52,7 +53,7 @@ Content-Type: application/json
 
 ###
 
-PATCH {{rootUrl}}/works/909704e5-4003-40bd-87e3-ce23180877eb
+PATCH {{rootUrl}}/works/{{uuid}}
 Content-Type: application/json
 
 {
@@ -67,4 +68,18 @@ Content-Type: application/json
 
 ###
 
-DELETE {{rootUrl}}/works/909704e5-4003-40bd-87e3-ce23180877eb
+PATCH {{rootUrl}}/works/{{uuid}}
+Content-Type: application/json
+
+{
+    "name": "name",
+    "occupation": "occupation",
+    "startDate": "2020-06-01T00:00:00+00:00",
+    "endDate": "2021-12-01T00:00:00+00:00",
+    "description": "description",
+    "category": "other"
+}
+
+###
+
+DELETE {{rootUrl}}/works/{{uuid}}

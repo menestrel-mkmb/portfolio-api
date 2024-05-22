@@ -1,10 +1,11 @@
 @rootUrl=http://localhost:3000
+@uuid=41d8181d-91c8-4dc9-954d-514891a24360
 
 GET {{rootUrl}}/educations
 
 ###
 
-GET {{rootUrl}}/educations/41d8181d-91c8-4dc9-954d-514891a24360
+GET {{rootUrl}}/educations/{{uuid}}
 
 ###
 
@@ -53,7 +54,7 @@ Content-Type: application/json
 
 ###
 
-PATCH {{rootUrl}}/educations/41d8181d-91c8-4dc9-954d-514891a24360
+PATCH {{rootUrl}}/educations/{{uuid}}
 Content-Type: application/json
 
 {
@@ -66,7 +67,7 @@ Content-Type: application/json
 
 ###
 
-PATCH {{rootUrl}}/educations/41d8181d-91c8-4dc9-954d-514891a24360
+PATCH {{rootUrl}}/educations/{{uuid}}
 Content-Type: application/json
 
 {
@@ -81,4 +82,4 @@ Content-Type: application/json
 
 ###
 
-DELETE {{rootUrl}}/educations/41d8181d-91c8-4dc9-954d-514891a24360
+DELETE {{rootUrl}}/educations/{{uuid}}

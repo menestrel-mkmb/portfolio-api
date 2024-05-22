@@ -1,10 +1,11 @@
 @rootUrl=http://localhost:3000
+@uuid=53928666-fb3d-4826-bf74-7f5ff5785613
 
 GET {{rootUrl}}/courses
 
 ###
 
-GET {{rootUrl}}/courses/53928666-fb3d-4826-bf74-7f5ff5785613
+GET {{rootUrl}}/courses/{{uuid}}
 
 ###
 
@@ -34,7 +35,7 @@ Content-Type: application/json
 
 ###
 
-PATCH {{rootUrl}}/courses/53928666-fb3d-4826-bf74-7f5ff5785613
+PATCH {{rootUrl}}/courses/{{uuid}}
 Content-Type: application/json
 
 {
@@ -45,11 +46,10 @@ Content-Type: application/json
 
 ###
 
-PATCH {{rootUrl}}/courses/53928666-fb3d-4826-bf74-7f5ff5785613
+PATCH {{rootUrl}}/courses/{{uuid}}
 Content-Type: application/json
 
 {
-  "id": "53928666-fb3d-4826-bf74-7f5ff5785613",
   "name": "HTML5 e CSS3 parte 1: crie uma página da Web",
   "provedor": "Alura",
   "category": "Programação Web",
@@ -59,4 +59,4 @@ Content-Type: application/json
 
 ###
 
-DELETE {{rootUrl}}/courses/53928666-fb3d-4826-bf74-7f5ff5785613
+DELETE {{rootUrl}}/courses/{{uuid}}
