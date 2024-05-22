@@ -6,6 +6,10 @@ GET {{rootUrl}}/works
 
 ###
 
+GET {{rootUrl}}/works/909704e5-4003-40bd-87e3-ce23180877eb
+
+###
+
 POST {{rootUrl}}/works
 Content-Type: application/json
 
@@ -48,14 +52,14 @@ Content-Type: application/json
 
 ###
 
-PATCH {{rootUrl}}/works/d4a3567d-e093-4c1f-8826-721cb2a219aa
+PATCH {{rootUrl}}/works/909704e5-4003-40bd-87e3-ce23180877eb
 Content-Type: application/json
 
 {
     "name": "PATCH updated",
     "occupation": "Patch",
     "startDate": "2016-06-01T00:00:00+00:00",
-    "endDate": "2016-01-01T00:00:00+00:00",
+    "endDate": "2017-01-01T00:00:00+00:00",
     "description": "Patch",
     "category": "edited",
     "statement": "Patch"
@@ -63,4 +67,4 @@ Content-Type: application/json
 
 ###
 
-DELETE {{rootUrl}}/works/d4a3567d-e093-4c1f-8826-721cb2a219aa
+DELETE {{rootUrl}}/works/909704e5-4003-40bd-87e3-ce23180877eb
