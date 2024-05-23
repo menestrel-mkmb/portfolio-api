@@ -9,23 +9,24 @@ export const errorHandler: FastifyErrorHandler = async (error, request, reply) =
     request.log.error(error);
 
     console.log('constructor', error.constructor);
+    let errorCode = null;
     switch(error.constructor){
         case BadRequestError:
-            return reply.code(400).send({
-                message: error.message
-            });
+            errorCode = 400;
+            break;
         case NotFoundError:
-                return reply.code(404).send({
-                    message: error.message
-                });
+            errorCode = 404;
+            break;
         case DuplicateEntityError:
-            return reply.code(409).send({
-                message: error.message
-            });
+            errorCode = 409;
+            break;
         default:
-            return reply.code(500).send({
-                message: "Internal server error",
-                "internalMessage": error.message
-            });
+            errorCode = 500;
     }
+
+    if(!error) {console.log(error);return;}
+
+    return reply.code(errorCode).send({
+        message: errorCode === 500 ? "Internal server error" : error.message
+    });
 }
