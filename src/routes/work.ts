@@ -9,6 +9,10 @@ import { ZodTypeProvider } from "fastify-type-provider-zod";
 
 import { prisma } from "../lib/prisma";
 
+import { NotFoundError } from "../errors/not-found";
+import { DuplicateEntityError } from "../errors/duplicate-entity";
+import { BadRequestError } from "../errors/bad-request";
+
 // ###
 // # RAW
 // ###
@@ -72,7 +76,7 @@ const getWorkDetails = async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = getWorkDetailsRequestSchema.parse(request.params);
     
     let workExists = await prisma.work.findUnique({ where: { id } });
-    if(!workExists) throw new Error("Work not found");
+    if(!workExists) throw new NotFoundError("Work not found");
 
     return reply.send({
         ...workExists,
@@ -96,7 +100,7 @@ const postWork = async (request: FastifyRequest, reply: FastifyReply) => {
     const work = postWorkRequestSchema.parse(request.body);
 
     const workExists = await prisma.work.findFirst({ where: { name: work.name } });
-    if(workExists) throw new Error("Work already exists");
+    if(workExists) throw new DuplicateEntityError("Work already exists");
 
     const newWork = await prisma.work.create({
         data: {
@@ -131,14 +135,16 @@ const patchWork = async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = workIdSchema.parse(request.params);
 
     const workExists = await prisma.work.findUnique({ where: { id } });
-    if(!workExists) throw new Error("Work not found");
+    if(!workExists) throw new NotFoundError("Work not found");
 
     const work = patchWorkRequestSchema.parse(request.body);
 
     const workNameExists = await prisma.work.findFirst({ where: { name: work.name } });
-    if(workNameExists) throw new Error("Work name already exists");
+    if(workNameExists) throw new DuplicateEntityError("Work name already exists");
 
-    if(work.startDate && work.endDate && work.startDate > work.endDate) throw new Error("Start date is after end date");
+    if(work.startDate && work.endDate
+        && work.startDate > work.endDate
+    ) throw new BadRequestError("Start date is after end date");
 
     const updatedWork = await prisma.work.update({ where: { id }, data: work });
 
@@ -165,7 +171,7 @@ const deleteWork = async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = deleteWorkRequestSchema.parse(request.params);
 
     let workExists = await prisma.work.findUnique({ where: { id } });
-    if(!workExists) throw new Error("Work not found");
+    if(!workExists) throw new NotFoundError("Work not found");
 
     await prisma.work.delete({ where: { id } });
 
