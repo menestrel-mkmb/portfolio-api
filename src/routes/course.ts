@@ -9,6 +9,9 @@ import { ZodTypeProvider } from "fastify-type-provider-zod";
 
 import { prisma } from "../lib/prisma";
 
+import { DuplicateEntityError } from "../errors/duplicate-entity";
+import { NotFoundError } from "../errors/not-found";
+
 // ###
 // # RAW
 // ###
@@ -62,7 +65,7 @@ const getCourseDetails = async (request: FastifyRequest, reply: FastifyReply) =>
     const { id } = getCourseDetailsRequestSchema.parse(request.params);
 
     const courseExists = await prisma.course.findUnique({ where: { id } });
-    if(!courseExists) throw new Error("Course not found");
+    if(!courseExists) throw new NotFoundError("Course not found");
 
     return reply.send(courseExists);
 };
@@ -82,7 +85,7 @@ const postCourses = async (request: FastifyRequest, reply: FastifyReply) => {
     const course = postCourseRequestSchema.parse(request.body);
     
     const nameExists = await prisma.course.findUnique({ where: { name: course.name } });
-    if(nameExists) throw new Error("Course name already exists");
+    if(nameExists) throw new DuplicateEntityError("Course name already exists");
 
     const prismaCourse = await prisma.course.create({ data: course });
 
@@ -106,10 +109,10 @@ const patchCourses = async (request: FastifyRequest, reply: FastifyReply) => {
     const course = patchCourseRequestSchema.parse(request.body);
 
     const courseExists = await prisma.course.findUnique({ where: { id } });
-    if(!courseExists) throw new Error("Course not found");
+    if(!courseExists) throw new NotFoundError("Course not found");
 
     const nameExists = await prisma.course.findUnique({ where: { name: course.name } });
-    if(nameExists) throw new Error("Course name already exists");
+    if(nameExists) throw new DuplicateEntityError("Course name already exists");
 
     const prismaCourse = await prisma.course.update({
         where: { id },
@@ -134,7 +137,7 @@ const deleteCourses = async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = courseIdSchema.parse(request.params);
 
     const courseExists = await prisma.course.findUnique({ where: { id } });
-    if(!courseExists) throw new Error("Course not found, maybe already deleted?");
+    if(!courseExists) throw new NotFoundError("Course not found, maybe already deleted?");
 
     const deletedCourse = await prisma.course.delete({ where: { id } });
 
