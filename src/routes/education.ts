@@ -9,6 +9,10 @@ import { ZodTypeProvider } from "fastify-type-provider-zod";
 
 import { prisma } from "../lib/prisma";
 
+import { NotFoundError } from "../errors/not-found";
+import { DuplicateEntityError } from "../errors/duplicate-entity";
+import { BadRequestError } from "../errors/bad-request";
+
 // ###
 // # RAW
 // ###
@@ -50,7 +54,7 @@ const getEducations = async (request: FastifyRequest, reply: FastifyReply) => {
     }));
 
     const educations = (getEducationsResponseSchema[200]).parse(datedEducations);
-    if(educations.length === 0) throw new Error("No education found");
+    if(educations.length === 0) throw new NotFoundError("No education found");
 
     reply.send(educations);
 }
@@ -69,7 +73,7 @@ const getEducationDetails = async (request: FastifyRequest, reply: FastifyReply)
     const { id } = educationIdSchema.parse(request.params);
 
     const prismaEducation = await prisma.education.findUnique({ where: { id } });
-    if(!prismaEducation) throw new Error("Education not found");
+    if(!prismaEducation) throw new NotFoundError("Education not found");
 
     const education = (getEducationDetailsResponseSchema[200]).parse({
         ...prismaEducation,
@@ -97,7 +101,7 @@ const postEducation = async (request: FastifyRequest, reply: FastifyReply) => {
     const educationExists = await prisma.education.findUnique({
         where: { title: education.title }
     });
-    if(educationExists) throw new Error("Education already exists");
+    if(educationExists) throw new DuplicateEntityError("Education already exists");
 
     const datedEducation = {
         ...education,
@@ -105,10 +109,10 @@ const postEducation = async (request: FastifyRequest, reply: FastifyReply) => {
         endDate: education.endDate ? new Date(education.endDate) : null
     };
 
-    if(!datedEducation) throw new Error("Invalid education data");
+    if(!datedEducation) throw new BadRequestError("Invalid education data");
     if( datedEducation.endDate &&
         datedEducation.startDate > datedEducation.endDate
-        ) throw new Error("Start date is after end date");
+    ) throw new BadRequestError("Start date is after end date");
 
     const prismaEducation = await prisma.education.create({ data: education });
 
@@ -137,12 +141,12 @@ const patchEducation = async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = educationIdSchema.parse(request.params);
 
     const educationExists = await prisma.education.findUnique({ where: { id } });
-    if(!educationExists) throw new Error("Education not found");
+    if(!educationExists) throw new NotFoundError("Education not found");
 
     const education = patchEducationRequestSchema.parse(request.body);
 
     const nameExists = await prisma.education.findUnique({ where: { title: education.title } });
-    if(nameExists) throw new Error("Unique title already exists");
+    if(nameExists) throw new DuplicateEntityError("Unique title already exists");
 
     const datedEducation = {
         ...education,
@@ -150,10 +154,10 @@ const patchEducation = async (request: FastifyRequest, reply: FastifyReply) => {
         endDate: education.endDate ? new Date(education.endDate) : null
     };
 
-    if(!datedEducation) throw new Error("Invalid education data");
+    if(!datedEducation) throw new BadRequestError("Invalid education data");
     if( datedEducation.endDate && datedEducation.startDate &&
         datedEducation.startDate > datedEducation.endDate
-        ) throw new Error("Start date is after end date");
+    ) throw new BadRequestError("Start date is after end date");
 
     const prismaEducation = await prisma.education.update({
         where: { id },
@@ -181,7 +185,7 @@ const deleteEducation = async (request: FastifyRequest, reply: FastifyReply) => 
     const { id } = educationIdSchema.parse(request.params);
 
     const educationExists = await prisma.education.findUnique({ where: { id } });
-    if(!educationExists) throw new Error("Education not found. Maybe already deleted?");
+    if(!educationExists) throw new NotFoundError("Education not found. Maybe already deleted?");
 
     await prisma.education.delete({ where: { id } });
 

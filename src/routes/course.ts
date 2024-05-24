@@ -8,6 +8,7 @@ import { z } from "zod";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 
 import { prisma } from "../lib/prisma";
+
 import { DuplicateEntityError } from "../errors/duplicate-entity";
 import { NotFoundError } from "../errors/not-found";
 
