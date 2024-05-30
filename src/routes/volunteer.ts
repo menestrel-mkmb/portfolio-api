@@ -55,11 +55,37 @@ const getVolunteers = async (request: FastifyRequest, reply: FastifyReply) => {
     reply.send(datedVolunteers);
 };
 
+export const getVolunteerResponseSchema = {
+    200: volunteerObjectSchemaWithId,
+    204: volunteerObjectSchemaWithId.optional()
+};
+export const getVolunteerSchema = {
+    summary: "Get a volunteer",
+    tags: ["volunteer"],
+    params: volunteerIdSchema,
+    response: getVolunteerResponseSchema
+};
+
+const getVolunteer = async (request: FastifyRequest, reply: FastifyReply) => {
+    const { id } = volunteerIdSchema.parse(request.params);
+
+    const volunteer = await prisma.volunteer.findUnique({ where: { id } });
+    if(!volunteer) reply.code(204).send(null);
+
+    reply.send({
+        ...volunteer,
+        startDate: volunteer?.startDate.toISOString(),
+        endDate: volunteer?.endDate?.toISOString()
+    });
+};
+
 export async function volunteer(app: FastifyInstance) {
     app
         .withTypeProvider<ZodTypeProvider>()
         .get('/volunteers',
             { schema: getVolunteersSchema },
             getVolunteers)
-        
+        .get('/volunteers/:id',
+            { schema: getVolunteerSchema },
+            getVolunteer)
 }
