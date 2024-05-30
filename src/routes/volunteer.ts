@@ -79,6 +79,42 @@ const getVolunteer = async (request: FastifyRequest, reply: FastifyReply) => {
     });
 };
 
+export const postVolunteerRequestSchema = {
+    body: volunteerObjectSchema
+};
+export const postVolunteerResponseSchema = {
+    201: volunteerObjectSchemaWithId,
+    209: volunteerObjectSchemaWithId
+};
+export const postVolunteerSchema = {
+    summary: "Create a volunteer",
+    tags: ["volunteer"],
+    body: volunteerObjectSchema,
+    response: postVolunteerResponseSchema
+};
+const postVolunteer = async (request: FastifyRequest, reply: FastifyReply) => {
+    const volunteer = volunteerObjectSchema.parse(request.body);
+
+    const datedVolunteer = {
+        ...volunteer,
+        startDate: new Date(volunteer.startDate),
+        endDate: volunteer.endDate ? new Date(volunteer.endDate) : null
+    };
+
+    if(datedVolunteer.endDate &&
+        datedVolunteer.endDate < datedVolunteer.startDate
+    ) throw new BadRequestError("End date must be after start date");
+
+    const prismaVolunteer = await prisma.volunteer.create({ data: datedVolunteer });
+
+    reply.code(201).send({
+        ...prismaVolunteer,
+        startDate: prismaVolunteer.startDate.toISOString(),
+        endDate: prismaVolunteer.endDate?.toISOString()
+    });
+}
+
+
 export async function volunteer(app: FastifyInstance) {
     app
         .withTypeProvider<ZodTypeProvider>()
@@ -88,4 +124,7 @@ export async function volunteer(app: FastifyInstance) {
         .get('/volunteers/:id',
             { schema: getVolunteerSchema },
             getVolunteer)
+        .post('/volunteers',
+            { schema: postVolunteerSchema },
+            postVolunteer)
 }
