@@ -20,4 +20,28 @@ Content-Type: application/json
 
 ###
 
+POST {{rootUrl}}/volunteers
+Content-Type: application/json
+
+{
+    "occupation": "Lead and cofounder",
+    "organization": "Ex Machina",
+    "startDate": "2021-01-01T00:00:00+00:00",
+    "endDate": "2021-12-31T00:00:00+00:00",
+    "category": "Engineering",
+    "whatIDid": "Raised 20k to create the project",
+    "whatILearned": "Leadership and project management"
+}
+
+###
+
 GET {{rootUrl}}/volunteers/{{uuid}}
+
+###
+
+PATCH {{rootUrl}}/volunteers/{{uuid}}
+Content-Type: application/json
+
+{
+    "occupation": "Patched"
+}
