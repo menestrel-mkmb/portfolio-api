@@ -92,6 +92,7 @@ export const postVolunteerSchema = {
     body: volunteerObjectSchema,
     response: postVolunteerResponseSchema
 };
+
 const postVolunteer = async (request: FastifyRequest, reply: FastifyReply) => {
     const volunteer = volunteerObjectSchema.parse(request.body);
 
@@ -112,8 +113,48 @@ const postVolunteer = async (request: FastifyRequest, reply: FastifyReply) => {
         startDate: prismaVolunteer.startDate.toISOString(),
         endDate: prismaVolunteer.endDate?.toISOString()
     });
-}
+};
 
+const patchVolunteerRequestSchema = volunteerObjectSchema.partial();
+const patchVolunteerResponseSchema = {
+    200: volunteerObjectSchemaWithId,
+    204: volunteerObjectSchemaWithId.optional()
+};
+const patchVolunteerSchema = {
+    summary: "Update a volunteer",
+    tags: ["volunteer"],
+    params: volunteerIdSchema,
+    body: patchVolunteerRequestSchema,
+    response: patchVolunteerResponseSchema
+};
+
+const patchVolunteer = async (request: FastifyRequest, reply: FastifyReply) => {
+    const { id } = volunteerIdSchema.parse(request.params);
+    
+    const volunteer = patchVolunteerRequestSchema.parse(request.body);
+    if(!volunteer) throw new BadRequestError("No data provided");
+
+    const datedVolunteer = {
+        ...volunteer,
+        startDate: volunteer.startDate ? new Date(volunteer.startDate) : undefined,
+        endDate: volunteer.endDate ? new Date(volunteer.endDate) : undefined
+    };
+    console.log(datedVolunteer);
+
+    if(datedVolunteer.startDate && datedVolunteer.endDate &&
+        datedVolunteer.endDate < datedVolunteer.startDate
+    ) throw new BadRequestError("End date must be after start date");
+
+    const prismaVolunteer = await prisma.volunteer.update({
+        where: { id }, data: datedVolunteer
+    });
+
+    reply.send({
+        ...prismaVolunteer,
+        startDate: prismaVolunteer.startDate.toISOString(),
+        endDate: prismaVolunteer.endDate?.toISOString()
+    });
+};
 
 export async function volunteer(app: FastifyInstance) {
     app
@@ -127,4 +168,7 @@ export async function volunteer(app: FastifyInstance) {
         .post('/volunteers',
             { schema: postVolunteerSchema },
             postVolunteer)
+        .patch('/volunteers/:id',
+            { schema: patchVolunteerSchema },
+            patchVolunteer);
 }
