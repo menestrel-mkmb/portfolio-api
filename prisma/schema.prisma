@@ -40,3 +40,14 @@ model Education {
   duration    Int
   verifyUrl   String    @map("verify_url")
 }
+
+model Volunteer {
+  id           String    @id @default(uuid())
+  occupation   String
+  organization String
+  startDate    DateTime  @map("start_date")
+  endDate      DateTime? @map("end_date")
+  category     String
+  whatIDid     String    @map("what_i_did")
+  whatILearned String    @map("what_i_learned")
+}
