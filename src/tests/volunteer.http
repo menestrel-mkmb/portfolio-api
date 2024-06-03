@@ -45,3 +45,7 @@ Content-Type: application/json
 {
     "occupation": "Patched"
 }
+
+###
+
+DELETE {{rootUrl}}/volunteers/{{uuid}}
