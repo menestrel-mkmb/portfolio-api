@@ -9,6 +9,7 @@ import { ZodTypeProvider } from 'fastify-type-provider-zod';
 
 import { prisma } from '../lib/prisma';
 import { BadRequestError } from '../errors/bad-request';
+import { NotFoundError } from '../errors/not-found';
 
 // ###
 // # RAW
@@ -156,6 +157,25 @@ const patchVolunteer = async (request: FastifyRequest, reply: FastifyReply) => {
     });
 };
 
+const deleteResponseSchema = {
+    204: volunteerIdSchema.optional().nullable()
+};
+const deleteSchema = {
+    summary: "Delete a volunteer",
+    tags: ["volunteer"],
+    params: volunteerIdSchema,
+    response: deleteResponseSchema
+};
+
+const deleteVolunteer = async (request: FastifyRequest, reply: FastifyReply) => {
+    const { id } = volunteerIdSchema.parse(request.params);
+
+    const volunteer = await prisma.volunteer.delete({ where: { id } });
+    if(!volunteer) throw new NotFoundError("Volunteer not found. Maybe already deleted?");
+
+    reply.code(204).send({ id });
+};
+
 export async function volunteer(app: FastifyInstance) {
     app
         .withTypeProvider<ZodTypeProvider>()
@@ -170,5 +190,8 @@ export async function volunteer(app: FastifyInstance) {
             postVolunteer)
         .patch('/volunteers/:id',
             { schema: patchVolunteerSchema },
-            patchVolunteer);
+            patchVolunteer)
+        .delete('/volunteers/:id',
+            { schema: deleteSchema },
+            deleteVolunteer);
 }
