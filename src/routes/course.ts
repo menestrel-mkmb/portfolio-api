@@ -19,7 +19,7 @@ import { NotFoundError } from "../errors/not-found";
 const courseIdSchema = z.object({
     id: z.string().uuid(),
 });
-const courseObjectSchema = z.object({
+export const courseObjectSchema = z.object({
     name: z.string(),
     provedor: z.string(),
     category: z.string(),

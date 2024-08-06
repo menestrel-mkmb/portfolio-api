@@ -20,7 +20,7 @@ import { BadRequestError } from "../errors/bad-request";
 const workIdSchema = z.object({
     id: z.string().uuid(),
 });
-const workObjectSchema = z.object({
+export const workObjectSchema = z.object({
     name: z.string(),
     occupation: z.string(),
     description: z.string(),
