@@ -11,9 +11,9 @@ RUN pnpm install
 # Compile n copy node_modules
 FROM base AS build
 WORKDIR /usr/src/app
-COPY . .
 COPY --from=deps /usr/src/app/node_modules ./node_modules
 RUN pnpm install -D typescript @types/node tsx prisma
+COPY . .
 RUN pnpm build
 RUN pnpm prune --prod
 
