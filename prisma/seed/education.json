@@ -1,0 +1,49 @@
+{
+    "data": [
+        {
+            "title": "Técnico em Mecatrônica",
+            "institution": "Instituto Federal de Educação, Ciência e Tecnologia do Tocantins",
+            "startDate": "2010-01-01",
+            "endDate": "2013-01-01",
+            "location": "Palmas",
+            "duration": 3600,
+            "verifyUrl": ""
+        },
+        {
+            "title": "Bacharel em Engenharia de Controle e Automação",
+            "institution": "Universidade Federal de Itajubá",
+            "startDate": "2014-01-01",
+            "endDate": "2021-01-01",
+            "location": "Itajubá",
+            "duration": 4000,
+            "verifyUrl": ""
+        },
+        {
+            "title": "Formação Complementar em Empreendedorismo",
+            "institution": "Universidade Federal de Itajubá",
+            "startDate": "2018-01-01",
+            "endDate": "2021-01-01",
+            "location": "Itajubá",
+            "duration": 400,
+            "verifyUrl": ""
+        },
+        {
+            "title": "Pós-graduação Lato Sensu em Análise e Desenvolvimento de Programas",
+            "institution": "Descomplica",
+            "startDate": "2022-08-24",
+            "endDate": "2023-07-20",
+            "location": "EaD",
+            "duration": 390,
+            "verifyUrl": ""
+        },
+        {
+            "title": "Pós-graduação Lato Sensu MBA em Segurança da Informação",
+            "institution": "Descomplica",
+            "startDate": "2022-09-11",
+            "endDate": "2023-09-06",
+            "location": "EaD",
+            "duration": 390,
+            "verifyUrl": ""
+        }
+    ]
+}
