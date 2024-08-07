@@ -1,5 +1,5 @@
 # Build the Docker image
-docker build -t my-fastify-api .
+docker build -t portfolio-api .
 
 # Run the Docker container
-docker run -d -p 3000:3000 my-fastify-api:v5
+docker run -d --network host -p 3000:3000 portfolio-api:latest
