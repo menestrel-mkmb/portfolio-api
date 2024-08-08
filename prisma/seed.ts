@@ -1,7 +1,9 @@
-import { json } from "stream/consumers";
 import { prisma } from "../src/lib/prisma";
 
 import course from "./seed/course.json";
+import education from "./seed/education.json";
+import volunteer from "./seed/volunteer.json";
+import work from "./seed/work.json";
 
 export const seed = async () => {
     await prisma.$transaction([
@@ -15,9 +17,9 @@ export const seed = async () => {
 
     await prisma.$transaction([
         prisma.course.createMany({ data: course.data }),
-        // prisma.education.createMany({ data: educations }),
-        // prisma.volunteer.createMany({ data: volunteers }),
-        // prisma.work.createMany({ data: works }),
+        prisma.education.createMany({ data: education.data }),
+        prisma.volunteer.createMany({ data: volunteer.data }),
+        prisma.work.createMany({ data: work.data }),
     ]);
 }
 
@@ -29,4 +31,4 @@ seed()
 .catch((e) => {
     console.error(e);
     process.exit(1);
-})
+});
