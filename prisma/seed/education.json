@@ -3,8 +3,8 @@
         {
             "title": "Técnico em Mecatrônica",
             "institution": "Instituto Federal de Educação, Ciência e Tecnologia do Tocantins",
-            "startDate": "2010-01-01",
-            "endDate": "2013-01-01",
+            "startDate": "2010-01-01T00:00:00+00:00",
+            "endDate": "2013-01-01T00:00:00+00:00",
             "location": "Palmas",
             "duration": 3600,
             "verifyUrl": ""
@@ -12,8 +12,8 @@
         {
             "title": "Bacharel em Engenharia de Controle e Automação",
             "institution": "Universidade Federal de Itajubá",
-            "startDate": "2014-01-01",
-            "endDate": "2021-01-01",
+            "startDate": "2014-01-01T00:00:00+00:00",
+            "endDate": "2021-01-01T00:00:00+00:00",
             "location": "Itajubá",
             "duration": 4000,
             "verifyUrl": ""
@@ -21,8 +21,8 @@
         {
             "title": "Formação Complementar em Empreendedorismo",
             "institution": "Universidade Federal de Itajubá",
-            "startDate": "2018-01-01",
-            "endDate": "2021-01-01",
+            "startDate": "2018-01-01T00:00:00+00:00",
+            "endDate": "2021-01-01T00:00:00+00:00",
             "location": "Itajubá",
             "duration": 400,
             "verifyUrl": ""
@@ -30,8 +30,8 @@
         {
             "title": "Pós-graduação Lato Sensu em Análise e Desenvolvimento de Programas",
             "institution": "Descomplica",
-            "startDate": "2022-08-24",
-            "endDate": "2023-07-20",
+            "startDate": "2022-08-24T00:00:00+00:00",
+            "endDate": "2023-07-20T00:00:00+00:00",
             "location": "EaD",
             "duration": 390,
             "verifyUrl": ""
@@ -39,8 +39,8 @@
         {
             "title": "Pós-graduação Lato Sensu MBA em Segurança da Informação",
             "institution": "Descomplica",
-            "startDate": "2022-09-11",
-            "endDate": "2023-09-06",
+            "startDate": "2022-09-11T00:00:00+00:00",
+            "endDate": "2023-09-06T00:00:00+00:00",
             "location": "EaD",
             "duration": 390,
             "verifyUrl": ""

@@ -3,8 +3,8 @@
         {
             "occupation": "Fundador e líder",
             "organization": "MakerSpace UNIFEI",
-            "startDate": "2019-01-01",
-            "endDate": "2019-01-12",
+            "startDate": "2019-01-01T00:00:00+00:00",
+            "endDate": "2019-01-12T00:00:00+00:00",
             "category": "Técnico",
             "whatIDid": "Convocar e treinar uma equipe em diversas competências técnicas e administrativas",
             "whatILearned": "Exercitar planejamento de aulas e de eventos em diferentes vertentes da tecnologia"
@@ -12,8 +12,8 @@
         {
             "occupation": "Líder, Host e Editor de Podcast",
             "organization": "MakerClub UNIFEI",
-            "startDate": "2018-08-01",
-            "endDate": "2019-07-01",
+            "startDate": "2018-08-01T00:00:00+00:00",
+            "endDate": "2019-07-01T00:00:00+00:00",
             "category": "Criação de Conteúdo",
             "whatIDid": "MakerCast foi um spin-off puramente técnico do ecossistema empreendedor de Itajubá",
             "whatILearned": "Edição de áudio, pesquisa de roteiro e convidados"
@@ -21,8 +21,8 @@
         {
             "occupation": "Representante Discente",
             "organization": "CONSUNI",
-            "startDate": "2018-03-01",
-            "endDate": "2018-08-01",
+            "startDate": "2018-03-01T00:00:00+00:00",
+            "endDate": "2018-08-01T00:00:00+00:00",
             "category": "Jurisdição e Legislação",
             "whatIDid": "Participei de modificações de documentos normativos em âmbito federal",
             "whatILearned": "Avaliação de leis e normas de similitude e avaliação de viabilidade local"

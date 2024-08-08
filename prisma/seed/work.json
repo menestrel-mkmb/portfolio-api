@@ -4,8 +4,8 @@
             "name": "Cuidador de idoso no lar",
             "occupation": "Cuidador de idoso",
             "description": "Auxiliar e acompanhante de idoso em banho, alimentação, medicação, atividades fisioterapêuticas e intercorrências habituais",
-            "startDate": "2021-08-01",
-            "endDate": "2023-01-01",
+            "startDate": "2021-08-01T00:00:00+00:00",
+            "endDate": "2023-01-01T00:00:00+00:00",
             "category": "Humano",
             "statement": "Pausei minha carreira para auxiliar minha família"
         },
@@ -13,8 +13,8 @@
             "name": "Autoponia",
             "occupation": "Estágio - Desenvolvimento de produto",
             "description": "Desenvolvimento de firmware com RTOS e ESP-IDF. Versionamento de software e hardware. Metodologia ágil. Documentação de hardware e código. Projetista e tester de hardware embarcado. Instalação de equipamento, análise e manutenção eletrônica",
-            "startDate": "2020-06-01",
-            "endDate": "2021-12-01",
+            "startDate": "2020-06-01T00:00:00+00:00",
+            "endDate": "2021-12-01T00:00:00+00:00",
             "category": "Desenvolvimento",
             "statement": ""
         },
@@ -22,8 +22,8 @@
             "name": "Instituto de Educação, Ciência e Tecnologia do Tocantins",
             "occupation": "Estágio - Laboratório de eletropneumática",
             "description": "Criação de roteiros de aprendizado dos alunos. Simulação de linhas de produção e atuadores pneumáticos. Ministrar aulas de laboratório para alunos.",
-            "startDate": "2013-09-01",
-            "endDate": "2014-02-01",
+            "startDate": "2013-09-01T00:00:00+00:00",
+            "endDate": "2014-02-01T00:00:00+00:00",
             "category": "Técnico",
             "statement": ""
         },
@@ -31,8 +31,8 @@
             "name": "PROTECTEL Engenharia Ltd.",
             "occupation": "Suporte técnico",
             "description": "Suporte técnico em computadores e notebooks, suporte administrativo de técnico em campo, digitalizador de documentos, criação de planilhas eletrônicas",
-            "startDate": "2010-01-01",
-            "endDate": "2017-01-01",
+            "startDate": "2010-01-01T00:00:00+00:00",
+            "endDate": "2017-01-01T00:00:00+00:00",
             "category": "Técnico",
             "statement": "Desde adolescente auxiliei nas empresas da família"
         }
