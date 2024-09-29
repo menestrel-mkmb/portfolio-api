@@ -1,0 +1,15 @@
+meta {
+  name: All courses
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://localhost:3000/courses
+  body: none
+  auth: none
+}
+
+assert {
+  status: eq 200
+}
