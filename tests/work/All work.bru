@@ -1,0 +1,15 @@
+meta {
+  name: All work
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/works
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+}
