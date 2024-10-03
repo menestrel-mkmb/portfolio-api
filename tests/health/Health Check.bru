@@ -5,7 +5,11 @@ meta {
 }
 
 get {
-  url: http://127.0.0.1:3000/health
+  url: {{baseUrl}}/health
   body: none
   auth: none
+}
+
+assert {
+  res.status: eq 200
 }
