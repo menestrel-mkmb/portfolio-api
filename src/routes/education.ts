@@ -47,6 +47,8 @@ export const getEducationsSchema = {
 
 const getEducations = async (request: FastifyRequest, reply: FastifyReply) => {
     const prismaEducations = await prisma.education.findMany({});
+    if(prismaEducations.length === 0) throw new NotFoundError("No education found");
+
     const datedEducations = prismaEducations.map(education => ({
         ...education,
         startDate: education.startDate.toISOString(),
@@ -54,8 +56,6 @@ const getEducations = async (request: FastifyRequest, reply: FastifyReply) => {
     }));
 
     const educations = (getEducationsResponseSchema[200]).parse(datedEducations);
-    if(educations.length === 0) throw new NotFoundError("No education found");
-
     reply.send(educations);
 }
 

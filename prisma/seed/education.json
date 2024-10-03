@@ -7,7 +7,7 @@
             "endDate": "2013-01-01T00:00:00+00:00",
             "location": "Palmas",
             "duration": 3600,
-            "verifyUrl": ""
+            "verifyUrl": "https://link"
         },
         {
             "title": "Bacharel em Engenharia de Controle e Automação",
@@ -16,7 +16,7 @@
             "endDate": "2021-01-01T00:00:00+00:00",
             "location": "Itajubá",
             "duration": 4000,
-            "verifyUrl": ""
+            "verifyUrl": "https://link"
         },
         {
             "title": "Formação Complementar em Empreendedorismo",
@@ -25,7 +25,7 @@
             "endDate": "2021-01-01T00:00:00+00:00",
             "location": "Itajubá",
             "duration": 400,
-            "verifyUrl": ""
+            "verifyUrl": "https://link"
         },
         {
             "title": "Pós-graduação Lato Sensu em Análise e Desenvolvimento de Programas",
@@ -34,7 +34,7 @@
             "endDate": "2023-07-20T00:00:00+00:00",
             "location": "EaD",
             "duration": 390,
-            "verifyUrl": ""
+            "verifyUrl": "https://link"
         },
         {
             "title": "Pós-graduação Lato Sensu MBA em Segurança da Informação",
@@ -43,7 +43,7 @@
             "endDate": "2023-09-06T00:00:00+00:00",
             "location": "EaD",
             "duration": 390,
-            "verifyUrl": ""
+            "verifyUrl": "https://link"
         }
     ]
 }
