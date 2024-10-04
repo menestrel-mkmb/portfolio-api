@@ -1,0 +1,15 @@
+meta {
+  name: DeleteCourse
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{baseUrl}}/courses/4e847ceb-9872-40af-b064-6bfe07f58da7
+  body: json
+  auth: none
+}
+
+assert {
+  res.status: eq 204
+}

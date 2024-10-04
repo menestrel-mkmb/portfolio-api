@@ -1,0 +1,25 @@
+meta {
+  name: UpdateCourse
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{baseUrl}}/courses/4e847ceb-9872-40af-b064-6bfe07f58da7
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "HTML Introdução",
+    "provedor": "Alura site",
+    "category": "Programação Web front",
+    "duration": 66,
+    "verifyUrl": "https://examplemodified.com"
+  }
+}
+
+assert {
+  res.status: eq 201
+}

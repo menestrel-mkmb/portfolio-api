@@ -1,0 +1,21 @@
+meta {
+  name: CreateCourse
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/courses
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "HTML 1",
+    "provedor": "Alura",
+    "category": "Programação Web",
+    "duration": 8,
+    "verifyUrl": "https://example.com"
+  }
+}
