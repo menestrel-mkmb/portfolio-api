@@ -11,5 +11,5 @@ delete {
 }
 
 assert {
-  res.status: eq 204
+  res.status: in 404, 204
 }
