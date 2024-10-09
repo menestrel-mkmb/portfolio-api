@@ -1,0 +1,25 @@
+meta {
+  name: CreateErrorAll
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/courses
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": 1,
+    "provedor": true,
+    "category": 9034,
+    "duration": false,
+    "verifyUrl": ""
+  }
+}
+
+assert {
+  res.status: eq 400
+}

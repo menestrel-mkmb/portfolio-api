@@ -1,0 +1,15 @@
+meta {
+  name: DeleteError
+  type: http
+  seq: 7
+}
+
+delete {
+  url: {{baseUrl}}/courses/invalid-id
+  body: json
+  auth: none
+}
+
+assert {
+  res.status: in 400, 404
+}

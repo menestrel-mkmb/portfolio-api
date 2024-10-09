@@ -1,11 +1,11 @@
 meta {
-  name: UpdateCourse
+  name: UpdateError
   type: http
   seq: 4
 }
 
 patch {
-  url: {{baseUrl}}/courses/{{courseToUpdate}}
+  url: {{baseUrl}}/courses/invalid-id
   body: json
   auth: none
 }
@@ -21,5 +21,5 @@ body:json {
 }
 
 assert {
-  res.status: eq 201
+  res.status: eq 400
 }

@@ -1,0 +1,25 @@
+meta {
+  name: UpdateErrorEmpty
+  type: http
+  seq: 6
+}
+
+patch {
+  url: {{baseUrl}}/courses/{{courseToUpdate}}
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "",
+    "provedor": "",
+    "category": "",
+    "duration": 0,
+    "verifyUrl": ""
+  }
+}
+
+assert {
+  res.status: eq 400
+}

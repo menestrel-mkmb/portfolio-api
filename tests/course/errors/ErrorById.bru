@@ -1,0 +1,15 @@
+meta {
+  name: ErrorById
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/courses/{{courseId}}
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+}
