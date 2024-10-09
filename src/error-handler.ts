@@ -27,6 +27,7 @@ export const errorHandler: FastifyErrorHandler = async (error, request, reply) =
     }
 
     if(!error) {console.log(error);return;}
+    process.env.NODE_ENV !== 'production' && console.log(error);
 
     return reply.code(errorCode).send({
         message: errorCode === 500 ? "Internal server error" : error.message
