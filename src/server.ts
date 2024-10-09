@@ -24,7 +24,7 @@ app.register(work);
 app.register(education);
 app.register(volunteer);
 
-app.listen({ port: 3000 })
-    .then( () => {
-        console.log("server listening on port 3000");
+app.listen({ port: Number(process.env.PORT) || 3000 })
+    .then( (port) => {
+        console.log(`server listening on port ${port}`);
     });
