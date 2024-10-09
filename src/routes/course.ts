@@ -20,11 +20,11 @@ const courseIdSchema = z.object({
     id: z.string().uuid(),
 });
 export const courseObjectSchema = z.object({
-    name: z.string(),
-    provedor: z.string(),
-    category: z.string(),
-    duration: z.number(),
-    verifyUrl: z.string()
+    name: z.string().min(1).max(100),
+    provedor: z.string().min(1).max(100),
+    category: z.string().min(1).max(100),
+    duration: z.number().gte(1).positive().int().finite().safe(),
+    verifyUrl: z.string().min(14).max(256)
 });
 const courseObjectSchemaWithId = courseIdSchema.merge(courseObjectSchema);
 
