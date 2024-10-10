@@ -14,7 +14,7 @@ datasource db {
 model Course {
   id        String @id @default(uuid())
   name      String @unique
-  provedor  String
+  provider  String
   category  String
   duration  Int
   verifyUrl String @map("verify_url")
