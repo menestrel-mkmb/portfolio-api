@@ -45,3 +45,7 @@ export const finiteNumberMessage = (propName: string): string => {
 export const safeNumberMessage = (propName: string): string => {
     return `${propName} has to be a safe number`;
 }
+
+export const ISODateMessage = (propName: string): string => {
+    return `${propName} has to be a ISO date on YYYY-MM-DDTHH:MM:SSZ`;
+}
