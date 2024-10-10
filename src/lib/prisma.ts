@@ -1,5 +1,11 @@
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 
-export const prisma = new PrismaClient({
-    log: ["query"],
-});
+const optionsPrisma: Prisma.Subset<Prisma.PrismaClientOptions, Prisma.PrismaClientOptions> = process.env.NODE_ENV !== 'production' ? {
+    log: [
+        "query",
+        "error",
+        "warn"
+    ],
+} : { log: ['query']};
+
+export const prisma = new PrismaClient(optionsPrisma);
