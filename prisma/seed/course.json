@@ -1,6 +1,27 @@
 {
     "data": [
         {
+            "name": "Course to getById on Bruno test API",
+            "provider": "BrunoAPI",
+            "category": "Test",
+            "duration": 100,
+            "verifyUrl": "https://reallink.trustme.bro"
+        },
+        {
+            "name": "Course to update on Bruno test API",
+            "provider": "BrunoAPI",
+            "category": "Test",
+            "duration": 100,
+            "verifyUrl": "https://reallink.trustme.bro"
+        },
+        {
+            "name": "Course to delete on Bruno test API",
+            "provider": "BrunoAPI",
+            "category": "Test",
+            "duration": 100,
+            "verifyUrl": "https://reallink.trustme.bro"
+        },
+        {
             "name": "AWS Official Content - Armazenamento e Banco de Dados na AWS",
             "provider": "DIO",
             "category": "Educação",
