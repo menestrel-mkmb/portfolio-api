@@ -22,4 +22,9 @@ body:json {
 
 assert {
   res.status: eq 400
+  res.body.message: contains name needs at least 4 characters
+  res.body.message: contains provider needs at least 3 characters
+  res.body.message: contains category needs at least 1 character
+  res.body.message: contains duration has to be a positive number
+  res.body.message: contains verifyUrl has to be at least 14 character
 }

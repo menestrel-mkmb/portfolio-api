@@ -5,11 +5,12 @@ meta {
 }
 
 get {
-  url: {{baseUrl}}/courses/{{courseId}}
+  url: {{baseUrl}}/courses/invalid-id
   body: none
   auth: none
 }
 
 assert {
-  res.status: eq 200
+  res.status: eq 400
+  res.body.message: matches Invalid uui
 }

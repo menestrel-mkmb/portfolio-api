@@ -16,10 +16,15 @@ body:json {
     "provedor": true,
     "category": 9034,
     "duration": false,
-    "verifyUrl": ""
+    "verifyUrl": "superreallink.com"
   }
 }
 
 assert {
   res.status: eq 400
+  res.body.message: contains name has to be a string
+  res.body.message: contains provider has to be a string
+  res.body.message: contains category has to be a string
+  res.body.message: contains duration has to be a number
+  res.body.message: contains verifyUrl has to be a valid url
 }

@@ -1,0 +1,29 @@
+meta {
+  name: CreateErrorSizeMatters
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/courses
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "A",
+    "provedor": "A",
+    "category": "C",
+    "duration": 0,
+    "verifyUrl": "link.y"
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body.message: contains name needs at least 4 characters
+  res.body.message: contains provider needs at least 3 characters
+  res.body.message: contains duration has to be greater than or equal to 1
+  res.body.message: contains verifyUrl has to be a valid url
+}
