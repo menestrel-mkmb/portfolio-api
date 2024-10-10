@@ -1,11 +1,11 @@
 meta {
   name: DeleteErrorUuid
   type: http
-  seq: 9
+  seq: 10
 }
 
 delete {
-  url: {{baseUrl}}/courses/invalid-id
+  url: {{baseUrl}}/courses/{{invalidUuid}}
   body: json
   auth: none
 }

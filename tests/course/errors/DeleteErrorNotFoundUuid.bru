@@ -1,0 +1,15 @@
+meta {
+  name: DeleteErrorNotFoundUuid
+  type: http
+  seq: 11
+}
+
+delete {
+  url: {{baseUrl}}/courses/{{externalGeneratedRandomUuid}}
+  body: json
+  auth: none
+}
+
+assert {
+  res.status: in 400, 404
+}

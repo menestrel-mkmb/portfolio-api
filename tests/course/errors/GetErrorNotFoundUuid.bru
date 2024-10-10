@@ -1,0 +1,16 @@
+meta {
+  name: GetErrorNotFoundUuid
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/courses/{{externalGeneratedRandomUuid}}
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 404
+  res.body.message: matches Course not found
+}
