@@ -12,6 +12,20 @@ import { prisma } from "../lib/prisma";
 import { NotFoundError } from "../errors/not-found";
 import { DuplicateEntityError } from "../errors/duplicate-entity";
 import { BadRequestError } from "../errors/bad-request";
+import {
+    gteNumberMessage,
+    numberMessage,
+    stringMessage,
+    ISODateMessage,
+    positiveNumberMessage,
+    integerMessage,
+    finiteNumberMessage,
+    safeNumberMessage,
+    urlMessage,
+    minMessage,
+    maxMessage
+} from "../errors/messages";
+
 
 // ###
 // # RAW
@@ -21,13 +35,36 @@ export const educationIdSchema = z.object({
     id: z.string().uuid(),
 });
 export const educationObjectSchema = z.object({
-    title: z.string(),
-    institution: z.string(),
-    startDate: z.string().datetime({ offset: true}),
-    endDate: z.string().datetime({ offset: true}).optional().nullable(),
-    location: z.string(),
-    duration: z.number().int(),
-    verifyUrl: z.string().url()
+    title: z
+        .string({ message: stringMessage('title')})
+        .min(4, { message: minMessage('title', 4)})
+        .max(100, { message: maxMessage('title', 100)}),
+    institution: z
+        .string({ message: stringMessage('institution')})
+        .min(3, { message: minMessage('institution', 3)})
+        .max(100, { message: maxMessage('institution', 100)}),
+    startDate: z
+        .string({ message: stringMessage('startDate')})
+        .datetime({ offset: true, message: ISODateMessage('startDate')})
+        .refine((dateCandidate => /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z)/.test(dateCandidate ?? "")), { message: ISODateMessage('startDate')}),
+    endDate: z
+        .string({ message: stringMessage('endDate')})
+        .datetime({ offset: true, message: ISODateMessage('endDate')})
+        .refine((dateCandidate => /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z)/.test(dateCandidate ?? "")), { message: ISODateMessage('endDate')})
+        .optional()
+        .nullable(),
+    location: z
+        .string({ message: stringMessage('location')}),
+    duration: z
+        .number({ message: numberMessage('duration')})
+        .gte(1, { message: gteNumberMessage('duration', 1)})
+        .positive({ message: positiveNumberMessage('duration')})
+        .int({ message: integerMessage('duration')})
+        .finite({ message: finiteNumberMessage('duration')})
+        .safe({ message: safeNumberMessage('duration')}),
+    verifyUrl: z
+        .string({ message: stringMessage('verifyUrl')})
+        .url({ message: urlMessage('verifyUrl')})
 });
 export const educationObjectSchemaWithId = educationIdSchema.merge(educationObjectSchema);
 
