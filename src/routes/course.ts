@@ -4,10 +4,22 @@ import {
     FastifyRequest
 } from "fastify";
 
+import { prisma } from "../lib/prisma";
+
 import { z } from "zod";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
-
-import { prisma } from "../lib/prisma";
+import {
+    finiteNumberMessage,
+    gteNumberMessage,
+    integerMessage,
+    maxMessage,
+    minMessage,
+    numberMessage,
+    positiveNumberMessage,
+    safeNumberMessage,
+    stringMessage,
+    urlMessage
+} from "../errors/messages";
 
 import { DuplicateEntityError } from "../errors/duplicate-entity";
 import { NotFoundError } from "../errors/not-found";
@@ -20,11 +32,30 @@ const courseIdSchema = z.object({
     id: z.string().uuid(),
 });
 export const courseObjectSchema = z.object({
-    name: z.string().min(1).max(100),
-    provedor: z.string().min(1).max(100),
-    category: z.string().min(1).max(100),
-    duration: z.number().gte(1).positive().int().finite().safe(),
-    verifyUrl: z.string().min(14).max(256)
+    name: z
+        .string({message: stringMessage('name')})
+        .min(4, {message: minMessage('name', 4)})
+        .max(100, {message: maxMessage('name', 100)}),
+    provedor: z
+        .string({message: stringMessage('provider')})
+        .min(3, {message: minMessage('provider', 3)})
+        .max(100, {message: maxMessage('provider', 100)}),
+    category: z
+        .string({message: stringMessage('category')})
+        .min(1, {message: minMessage('category', 1)})
+        .max(100, {message: maxMessage('category', 100)}),
+    duration: z
+        .number({message: numberMessage('duration')})
+        .gte(1, {message: gteNumberMessage('duration', 1)})
+        .positive({message: positiveNumberMessage('duration')})
+        .int({message: integerMessage('duration')})
+        .finite({message: finiteNumberMessage('duration')})
+        .safe({message: safeNumberMessage('duration')}),
+    verifyUrl: z
+        .string({ message: stringMessage('verifyUrl')})
+        .url({message: urlMessage('verifyUrl')})
+        .min(14, {message: minMessage('verifyUrl', 14)})
+        .max(256, {message: maxMessage('verifyUrl', 256)}),
 });
 const courseObjectSchemaWithId = courseIdSchema.merge(courseObjectSchema);
 
