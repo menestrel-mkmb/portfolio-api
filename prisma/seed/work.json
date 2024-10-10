@@ -1,11 +1,47 @@
 {
     "data": [
         {
+            "name": "work to get on Bruno",
+            "occupation": "BrunoAPI",
+            "description": "BrunoAPI",
+            "startDate": "200-00-01T00:00:00+00:00",
+            "endDate": "2001-01-01T00:00:00+00:00",
+            "category": "Tests",
+            "statement": "optional"
+        },
+        {
+            "name": "work to update on Bruno",
+            "occupation": "BrunoAPI",
+            "description": "BrunoAPI",
+            "startDate": "200-00-01T00:00:00+00:00",
+            "endDate": "2001-01-01T00:00:00+00:00",
+            "category": "Tests",
+            "statement": "optional"
+        },
+        {
+            "name": "work to delete on Bruno",
+            "occupation": "BrunoAPI",
+            "description": "BrunoAPI",
+            "startDate": "200-00-01T00:00:00+00:00",
+            "endDate": "2001-01-01T00:00:00+00:00",
+            "category": "Tests",
+            "statement": "optional"
+        },
+        {
+            "name": "M&M Empreendimentos",
+            "occupation": "Administrador",
+            "description": "Negociações e documentação",
+            "startDate": "2024-05-27T00:00:00+00:00",
+            "endDate": null,
+            "category": "Humano",
+            "statement": "Enquanto não trabalho como desenvolvedor, fico auxiliando nas empresas da família"
+        },
+        {
             "name": "Cuidador de idoso no lar",
             "occupation": "Cuidador de idoso",
             "description": "Auxiliar e acompanhante de idoso em banho, alimentação, medicação, atividades fisioterapêuticas e intercorrências habituais",
             "startDate": "2021-08-01T00:00:00+00:00",
-            "endDate": "2023-01-01T00:00:00+00:00",
+            "endDate": "2023-01-14T00:00:00+00:00",
             "category": "Humano",
             "statement": "Pausei minha carreira para auxiliar minha família"
         },
@@ -16,7 +52,7 @@
             "startDate": "2020-06-01T00:00:00+00:00",
             "endDate": "2021-12-01T00:00:00+00:00",
             "category": "Desenvolvimento",
-            "statement": ""
+            "statement": null
         },
         {
             "name": "Instituto de Educação, Ciência e Tecnologia do Tocantins",
@@ -25,16 +61,16 @@
             "startDate": "2013-09-01T00:00:00+00:00",
             "endDate": "2014-02-01T00:00:00+00:00",
             "category": "Técnico",
-            "statement": ""
+            "statement": null
         },
         {
             "name": "PROTECTEL Engenharia Ltd.",
             "occupation": "Suporte técnico",
-            "description": "Suporte técnico em computadores e notebooks, suporte administrativo de técnico em campo, digitalizador de documentos, criação de planilhas eletrônicas",
+            "description": "Suporte técnico em computadores e notebooks, suporte técnico remoto na automação de relés, digitalizador de documentos, criação de planilhas eletrônicas",
             "startDate": "2010-01-01T00:00:00+00:00",
             "endDate": "2017-01-01T00:00:00+00:00",
             "category": "Técnico",
-            "statement": "Desde adolescente auxiliei nas empresas da família"
+            "statement": "Desde adolescente auxiliei pontualmente nas empresas da família, e houveram períodos de alta demanda dessas atividades"
         }
     ]
 }
