@@ -1,0 +1,32 @@
+meta {
+  name: CreateErrorEmptyStrings
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/educations
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title": "",
+    "institution": "",
+    "startDate": "",
+    "endDate": "",
+    "location": "",
+    "duration": "",
+    "verifyUrl": ""
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body.message: contains title needs at least 4 characters
+  res.body.message: contains institution needs at least 3 characters
+  res.body.message: contains startDate needs at least 1 character
+  res.body.message: contains duration has to be a positive number
+  res.body.message: contains verifyUrl needs at least 14 character
+}

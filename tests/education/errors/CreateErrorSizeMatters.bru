@@ -1,0 +1,31 @@
+meta {
+  name: CreateErrorSizeMatters
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/educations
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title": "A",
+    "institution": "UF",
+    "startDate": "asdasdsad",
+    "endDate": "asdasdsad",
+    "location": "W",
+    "duration": 0,
+    "verifyUrl": ""
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body.message: contains name needs at least 4 characters
+  res.body.message: contains provider needs at least 3 characters
+  res.body.message: contains duration has to be greater than or equal to 1
+  res.body.message: contains verifyUrl has to be a valid url
+}
