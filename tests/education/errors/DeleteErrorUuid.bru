@@ -1,0 +1,15 @@
+meta {
+  name: DeleteErrorUuid
+  type: http
+  seq: 10
+}
+
+delete {
+  url: {{baseUrl}}/educations/{{invalidUuid}}
+  body: json
+  auth: none
+}
+
+assert {
+  res.status: in 400, 404
+}
