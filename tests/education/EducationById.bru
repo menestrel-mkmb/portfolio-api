@@ -5,11 +5,12 @@ meta {
 }
 
 get {
-  url: {{baseUrl}}/educations/{{educationId}}
+  url: {{baseUrl}}/educations/{{educationToGet}}
   body: none
   auth: none
 }
 
 assert {
   res.status: eq 200
+  res.body.name: eq education to get on Bruno
 }

@@ -1,0 +1,23 @@
+meta {
+  name: CreateEducation
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/educations
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title": "EducationCreatedByBrunoAPI",
+    "institution": "BrunoAPI",
+    "startDate": "2000-01-01T00:00:00+00:00",
+    "endDate": "2001-01-01T00:00:00+00:00",
+    "location": "Software",
+    "duration": 64,
+    "verifyUrl": "https://reallink.trustme.bro"
+  }
+}

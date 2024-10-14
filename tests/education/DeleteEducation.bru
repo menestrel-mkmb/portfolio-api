@@ -1,0 +1,11 @@
+meta {
+  name: DeleteEducation
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{baseUrl}}/educations/{{educationToDelete}}
+  body: none
+  auth: none
+}
