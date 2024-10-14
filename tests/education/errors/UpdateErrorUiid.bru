@@ -1,0 +1,26 @@
+meta {
+  name: UpdateErrorUiid
+  type: http
+  seq: 7
+}
+
+patch {
+  url: {{baseUrl}}/educations/invalid-id
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "HTML Introdução",
+    "provider": "Alura site",
+    "category": "Programação Web front",
+    "duration": 66,
+    "verifyUrl": "https://examplemodified.com"
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body.message: contains Invalid uuid
+}

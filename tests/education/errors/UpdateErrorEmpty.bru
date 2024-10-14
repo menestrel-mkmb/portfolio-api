@@ -1,0 +1,25 @@
+meta {
+  name: UpdateErrorEmpty
+  type: http
+  seq: 9
+}
+
+patch {
+  url: {{baseUrl}}/educations/{{educationToUpdate}}
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "",
+    "provider": "",
+    "category": "",
+    "duration": 0,
+    "verifyUrl": ""
+  }
+}
+
+assert {
+  res.status: eq 400
+}

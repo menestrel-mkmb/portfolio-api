@@ -1,0 +1,26 @@
+meta {
+  name: UpdateErrorAll
+  type: http
+  seq: 8
+}
+
+patch {
+  url: {{baseUrl}}/educations/{{educationToUpdate}}
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": 1,
+    "provider": false,
+    "category": 13541,
+    "duration": true,
+    "verifyUrl": false
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body.message: contains duration has to be a number
+}
