@@ -36,7 +36,7 @@ export const courseObjectSchema = z.object({
         .string({message: stringMessage('name')})
         .min(4, {message: minMessage('name', 4)})
         .max(100, {message: maxMessage('name', 100)}),
-    provedor: z
+    provider: z
         .string({message: stringMessage('provider')})
         .min(3, {message: minMessage('provider', 3)})
         .max(100, {message: maxMessage('provider', 100)}),

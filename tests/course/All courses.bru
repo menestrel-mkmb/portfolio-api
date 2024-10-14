@@ -12,9 +12,5 @@ get {
 
 assert {
   res.status: eq 200
-}
-
-tests {
-  const body = res.getBody(Object);
-  console.log(body);
+  res.body: isDefined
 }

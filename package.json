@@ -9,7 +9,8 @@
     "build": "tsup src --format esm",
     "db:migrate": "prisma migrate dev",
     "db:seed": "prisma db seed",
-    "db:studio": "prisma studio"
+    "db:studio": "prisma studio",
+    "db:all": "prisma generate && prisma migrate deploy && prisma db seed"
   },
   "keywords": [],
   "author": "",

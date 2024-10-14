@@ -1,50 +1,71 @@
 {
     "data": [
         {
+            "name": "Course to getById on Bruno test API",
+            "provider": "BrunoAPI",
+            "category": "Test",
+            "duration": 1,
+            "verifyUrl": "https://reallink.trustme.bro/1"
+        },
+        {
+            "name": "Course to update on Bruno test API",
+            "provider": "BrunoAPI",
+            "category": "Test",
+            "duration": 1,
+            "verifyUrl": "https://reallink.trustme.bro/2"
+        },
+        {
+            "name": "Course to delete on Bruno test API",
+            "provider": "BrunoAPI",
+            "category": "Test",
+            "duration": 1,
+            "verifyUrl": "https://reallink.trustme.bro/3"
+        },
+        {
             "name": "AWS Official Content - Armazenamento e Banco de Dados na AWS",
-            "provedor": "DIO",
+            "provider": "DIO",
             "category": "Educação",
             "duration": 2,
             "verifyUrl": "https://www.dio.me/certificate/A4CA66BC/share"
         },
         {
             "name": "AWS Official Content - Introdução à Computação em Nuvem com AWS",
-            "provedor": "DIO",
+            "provider": "DIO",
             "category": "Educação",
             "duration": 1,
             "verifyUrl": "https://www.dio.me/certificate/681CFDB4/share"
         },
         {
             "name": "AWS Official Content - Segurança, Monitoramento e Suporte na AWS",
-            "provedor": "DIO",
+            "provider": "DIO",
             "category": "Educação",
             "duration": 2,
             "verifyUrl": "https://www.dio.me/certificate/92150CF0/share"
         },
         {
             "name": "Abstraindo o Mundo Real com Desafios de Código Java",
-            "provedor": "DIO",
+            "provider": "DIO",
             "category": "Educação",
             "duration": 6,
             "verifyUrl": "https://www.dio.me/certificate/FF32998C/share"
         },
         {
             "name": "Adicionando Segurança a uma API REST com Spring Security",
-            "provedor": "DIO",
+            "provider": "DIO",
             "category": "Educação",
             "duration": 2,
             "verifyUrl": "https://www.dio.me/certificate/175E7AE6/share"
         },
         {
             "name": "Bancos de Dados SQL e NoSQL Para Devs",
-            "provedor": "DIO",
+            "provider": "DIO",
             "category": "Educação",
             "duration": 6,
             "verifyUrl": "https://www.dio.me/certificate/36911C81/share"
         },
         {
             "name": "Criando uma API REST Documentada com Spring Web e Swagger",
-            "provedor": "DIO",
+            "provider": "DIO",
             "category": "Educação",
             "duration": 2,
             "verifyUrl": "https://www.dio.me/certificate/C8A1B9D6/share"

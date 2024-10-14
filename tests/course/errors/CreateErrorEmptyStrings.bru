@@ -1,7 +1,7 @@
 meta {
   name: CreateErrorEmptyStrings
   type: http
-  seq: 2
+  seq: 3
 }
 
 post {
@@ -13,7 +13,7 @@ post {
 body:json {
   {
     "name": "",
-    "provedor": "",
+    "provider": "",
     "category": "",
     "duration": 0,
     "verifyUrl": ""
@@ -26,5 +26,5 @@ assert {
   res.body.message: contains provider needs at least 3 characters
   res.body.message: contains category needs at least 1 character
   res.body.message: contains duration has to be a positive number
-  res.body.message: contains verifyUrl has to be at least 14 character
+  res.body.message: contains verifyUrl needs at least 14 character
 }
